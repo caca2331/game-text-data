@@ -1,0 +1,19 @@
+.DS_Store
+Thumbs.db
+
+# 运行时目录：上游快照（嵌套的 git 仓库）、中间产物、语料、产物包。都不入库，包不公开分发
+/upstream/
+/build/
+/corpus/
+/out/
+
+# 并行开发用的 git worktree 槽位
+/.worktrees/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# 日志
+*.log

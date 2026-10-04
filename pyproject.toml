@@ -1,0 +1,26 @@
+[project]
+name = "gametext"
+version = "0.1.0"
+description = "从社区解包数据离线提取游戏剧情 / 对话 / UI 文本，产出多语言逐行对齐的 JSONL"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.11"
+dependencies = [
+    "orjson==3.11.4",
+    "zstandard==0.22.0",
+]
+
+[project.scripts]
+gametext = "gametext.core.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,30 @@
+# 公开仓库的 CI：core 的测试、import 边界、文档检查（`uv run pytest`）。不跑提取：上游快照和语料都不在仓库里。
+# dev_tools/publish.py 发布时先推到 ci-gate 分支，这个工作流全绿才把同一个提交推上 main（.publish.toml 的 ci_gate）。
+name: CI
+
+on:
+  push:
+    branches: [main, ci-gate]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: 安装（含 dev 组）
+        run: uv sync --frozen
+
+      - name: 测试
+        run: uv run pytest

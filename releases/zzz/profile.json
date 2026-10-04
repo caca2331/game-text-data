@@ -1,0 +1,298 @@
+{
+ "contracts": {
+  "loose": "zzz.loose/1",
+  "messages": "zzz.messages/1",
+  "quests": "zzz.quests/1",
+  "scenes": "zzz.scenes/1",
+  "terms": "zzz.terms/1"
+ },
+ "tables": {
+  "loose": {
+   "CHS": {
+    "enum_share": {
+     "reason": {
+      "non_story": 0.198177,
+      "unmatched": 0.801166,
+      "unused": 0.000657
+     }
+    },
+    "items": {},
+    "null_rate": {
+     "group": 0.923395,
+     "seq": 0.923395,
+     "text": 0.0,
+     "upstream.version": 0.0
+    },
+    "rows": 138477
+   },
+   "EN": {
+    "enum_share": {
+     "reason": {
+      "non_story": 0.198177,
+      "unmatched": 0.801166,
+      "unused": 0.000657
+     }
+    },
+    "items": {},
+    "null_rate": {
+     "group": 0.923395,
+     "seq": 0.923395,
+     "text": 0.042679,
+     "upstream.version": 0.0
+    },
+    "rows": 138477
+   },
+   "JA": {
+    "enum_share": {
+     "reason": {
+      "non_story": 0.198177,
+      "unmatched": 0.801166,
+      "unused": 0.000657
+     }
+    },
+    "items": {},
+    "null_rate": {
+     "group": 0.923395,
+     "seq": 0.923395,
+     "text": 0.040852,
+     "upstream.version": 0.0
+    },
+    "rows": 138477
+   }
+  },
+  "messages": {
+   "CHS": {
+    "enum_share": {},
+    "items": {
+     "nodes": 4568,
+     "nodes[].messages": 9144,
+     "nodes[].options": 4661,
+     "quests": 365
+    },
+    "null_rate": {
+     "nodes[].messages[].speaker": 0.044948,
+     "nodes[].messages[].text": 0.007108,
+     "nodes[].options[].goto_step": 0.022527,
+     "nodes[].options[].text": 0.012658,
+     "upstream.version": 0.0
+    },
+    "rows": 961
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {
+     "nodes": 4568,
+     "nodes[].messages": 9144,
+     "nodes[].options": 4661,
+     "quests": 365
+    },
+    "null_rate": {
+     "nodes[].messages[].speaker": 0.044948,
+     "nodes[].messages[].text": 0.007327,
+     "nodes[].options[].goto_step": 0.022527,
+     "nodes[].options[].text": 0.012658,
+     "upstream.version": 0.0
+    },
+    "rows": 961
+   },
+   "JA": {
+    "enum_share": {},
+    "items": {
+     "nodes": 4568,
+     "nodes[].messages": 9144,
+     "nodes[].options": 4661,
+     "quests": 365
+    },
+    "null_rate": {
+     "nodes[].messages[].speaker": 0.044948,
+     "nodes[].messages[].text": 0.007327,
+     "nodes[].options[].goto_step": 0.022527,
+     "nodes[].options[].text": 0.012658,
+     "upstream.version": 0.0
+    },
+    "rows": 961
+   }
+  },
+  "quests": {
+   "CHS": {
+    "enum_share": {},
+    "items": {
+     "next_quests": 5449,
+     "prev_quests": 5406
+    },
+    "null_rate": {
+     "description": 0.289621,
+     "display_name": 0.975005,
+     "finish": 1.0,
+     "name": 0.516652,
+     "target": 0.335941,
+     "upstream.version": 0.0
+    },
+    "rows": 14443
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {
+     "next_quests": 5449,
+     "prev_quests": 5406
+    },
+    "null_rate": {
+     "description": 0.346258,
+     "display_name": 0.975213,
+     "finish": 1.0,
+     "name": 0.548432,
+     "target": 0.389462,
+     "upstream.version": 0.0
+    },
+    "rows": 14443
+   },
+   "JA": {
+    "enum_share": {},
+    "items": {
+     "next_quests": 5449,
+     "prev_quests": 5406
+    },
+    "null_rate": {
+     "description": 0.325971,
+     "display_name": 0.975213,
+     "finish": 1.0,
+     "name": 0.530915,
+     "target": 0.36966,
+     "upstream.version": 0.0
+    },
+    "rows": 14443
+   }
+  },
+  "scenes": {
+   "CHS": {
+    "enum_share": {
+     "kind": {
+      "13": 0.000511,
+      "Bubble": 0.140977,
+      "BubbleNpc": 0.005228,
+      "BubbleStory": 0.112103,
+      "Chat": 0.31801,
+      "ChatAudio": 0.002013,
+      "ChatPlus": 0.000361,
+      "GalGame": 0.040743
+     },
+     "quests[].via": {
+      "ActivityBattleQuestTemplateTb.json": 0.087248,
+      "ArchiveFileQuestTemplateTb.json": 0.912752
+     }
+    },
+    "items": {
+     "cast": 16234,
+     "lines": 241270,
+     "quests": 447
+    },
+    "null_rate": {
+     "cast[]": 0.0,
+     "group": 0.380055,
+     "intro": 0.962713,
+     "kind": 0.380055,
+     "lines[].text": 0.0,
+     "title": 0.962713,
+     "upstream.version": 0.0
+    },
+    "rows": 33282
+   },
+   "EN": {
+    "enum_share": {
+     "kind": {
+      "13": 0.000511,
+      "Bubble": 0.140977,
+      "BubbleNpc": 0.005228,
+      "BubbleStory": 0.112103,
+      "Chat": 0.31801,
+      "ChatAudio": 0.002013,
+      "ChatPlus": 0.000361,
+      "GalGame": 0.040743
+     },
+     "quests[].via": {
+      "ActivityBattleQuestTemplateTb.json": 0.087248,
+      "ArchiveFileQuestTemplateTb.json": 0.912752
+     }
+    },
+    "items": {
+     "cast": 16234,
+     "lines": 241270,
+     "quests": 447
+    },
+    "null_rate": {
+     "cast[]": 0.00616,
+     "group": 0.380055,
+     "intro": 0.962743,
+     "kind": 0.380055,
+     "lines[].text": 0.001907,
+     "title": 0.962743,
+     "upstream.version": 0.0
+    },
+    "rows": 33282
+   },
+   "JA": {
+    "enum_share": {
+     "kind": {
+      "13": 0.000511,
+      "Bubble": 0.140977,
+      "BubbleNpc": 0.005228,
+      "BubbleStory": 0.112103,
+      "Chat": 0.31801,
+      "ChatAudio": 0.002013,
+      "ChatPlus": 0.000361,
+      "GalGame": 0.040743
+     },
+     "quests[].via": {
+      "ActivityBattleQuestTemplateTb.json": 0.087248,
+      "ArchiveFileQuestTemplateTb.json": 0.912752
+     }
+    },
+    "items": {
+     "cast": 16234,
+     "lines": 241270,
+     "quests": 447
+    },
+    "null_rate": {
+     "cast[]": 0.00616,
+     "group": 0.380055,
+     "intro": 0.962743,
+     "kind": 0.380055,
+     "lines[].text": 0.002176,
+     "title": 0.962743,
+     "upstream.version": 0.0
+    },
+    "rows": 33282
+   }
+  },
+  "terms": {
+   "CHS": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 125760
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.02667
+    },
+    "rows": 125760
+   },
+   "JA": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.026582
+    },
+    "rows": 125760
+   }
+  }
+ },
+ "upstream": {
+  "commit": "1277ebca4b8a7a6c3bcbaac6d5708dc9f4a55f23",
+  "version": "3.2.0"
+ }
+}

@@ -1,0 +1,2 @@
+rev	upstream_version	upstream_commit	langs	fingerprint	released	note
+1	4.6.0	724b139d8c9c32d12552eb95745a4fee72bfe48b	en,ja,zh-Hans	sha256:f52dca4a021f297b8022b8d5e49f875232b231cbde18c8e70cafb83c3be73194	2026-10-02	首次公开（含短名词表 terms_*）

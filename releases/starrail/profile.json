@@ -1,0 +1,520 @@
+{
+ "contracts": {
+  "dialogues": "starrail.dialogues/1",
+  "messages": "starrail.messages/1",
+  "missions": "starrail.missions/1",
+  "sentences": "starrail.sentences/1",
+  "terms": "starrail.terms/1"
+ },
+ "tables": {
+  "dialogues": {
+   "CHS": {
+    "enum_share": {
+     "events[].kind": {
+      "option": 0.105801,
+      "talk": 0.600898,
+      "trigger": 0.113396,
+      "wait": 0.179904
+     },
+     "events[].reply.voice": {
+      "unvoiced": 0.912533,
+      "voiced": 0.087467
+     },
+     "events[].voice": {
+      "generic": 0.002368,
+      "unknown": 2.1e-05,
+      "unvoiced": 0.873812,
+      "voiced": 0.123799
+     }
+    },
+    "items": {
+     "events": 113099
+    },
+    "null_rate": {
+     "events[].carrier": 0.088281,
+     "events[].reply": 0.139144,
+     "events[].reply.speaker": 0.056596,
+     "events[].reply.text": 0.000291,
+     "events[].reply.voice_id": 0.913212,
+     "events[].speaker": 0.290897,
+     "events[].text": 0.001338,
+     "events[].trigger": 0.0,
+     "events[].voice_id": 0.886073,
+     "floor_id": 0.673794,
+     "group_id": 0.9455,
+     "interact_title": 0.9455,
+     "location": 0.710511,
+     "upstream.version": 0.0
+    },
+    "rows": 13890
+   },
+   "EN": {
+    "enum_share": {
+     "events[].kind": {
+      "option": 0.105801,
+      "talk": 0.600898,
+      "trigger": 0.113396,
+      "wait": 0.179904
+     },
+     "events[].reply.voice": {
+      "unvoiced": 0.912533,
+      "voiced": 0.087467
+     },
+     "events[].voice": {
+      "generic": 0.002368,
+      "unknown": 2.1e-05,
+      "unvoiced": 0.873812,
+      "voiced": 0.123799
+     }
+    },
+    "items": {
+     "events": 113099
+    },
+    "null_rate": {
+     "events[].carrier": 0.088281,
+     "events[].reply": 0.139144,
+     "events[].reply.speaker": 0.056596,
+     "events[].reply.text": 0.000291,
+     "events[].reply.voice_id": 0.913212,
+     "events[].speaker": 0.290897,
+     "events[].text": 0.001338,
+     "events[].trigger": 0.0,
+     "events[].voice_id": 0.886073,
+     "floor_id": 0.673794,
+     "group_id": 0.9455,
+     "interact_title": 0.9455,
+     "location": 0.710511,
+     "upstream.version": 0.0
+    },
+    "rows": 13890
+   },
+   "JP": {
+    "enum_share": {
+     "events[].kind": {
+      "option": 0.105801,
+      "talk": 0.600898,
+      "trigger": 0.113396,
+      "wait": 0.179904
+     },
+     "events[].reply.voice": {
+      "unvoiced": 0.912533,
+      "voiced": 0.087467
+     },
+     "events[].voice": {
+      "generic": 0.002368,
+      "unknown": 2.1e-05,
+      "unvoiced": 0.873812,
+      "voiced": 0.123799
+     }
+    },
+    "items": {
+     "events": 113099
+    },
+    "null_rate": {
+     "events[].carrier": 0.088281,
+     "events[].reply": 0.139144,
+     "events[].reply.speaker": 0.056596,
+     "events[].reply.text": 0.000291,
+     "events[].reply.voice_id": 0.913212,
+     "events[].speaker": 0.290897,
+     "events[].text": 0.001338,
+     "events[].trigger": 0.0,
+     "events[].voice_id": 0.886073,
+     "floor_id": 0.673794,
+     "group_id": 0.9455,
+     "interact_title": 0.9455,
+     "location": 0.710511,
+     "upstream.version": 0.0
+    },
+    "rows": 13890
+   }
+  },
+  "messages": {
+   "CHS": {
+    "enum_share": {
+     "sections[].items[].item_type": {
+      "Image": 0.005666,
+      "Link": 0.000291,
+      "Raid": 0.000145,
+      "Sticker": 0.046128,
+      "Text": 0.947552,
+      "Video": 0.000218
+     },
+     "sections[].items[].sender": {
+      "NPC": 0.65008,
+      "Player": 0.231077,
+      "PlayerAuto": 0.075984,
+      "System": 0.042859
+     },
+     "sections[].items[].voice": {
+      "unknown": 1.0
+     }
+    },
+    "items": {
+     "sections": 786,
+     "sections[].items": 13766,
+     "sections[].items[].next": 14301,
+     "sections[].start": 794
+    },
+    "null_rate": {
+     "contact": 0.0,
+     "sections[].items[].option_text": 0.772556,
+     "sections[].items[].text": 0.029493,
+     "signature": 0.294574,
+     "upstream.version": 0.0
+    },
+    "rows": 774
+   },
+   "EN": {
+    "enum_share": {
+     "sections[].items[].item_type": {
+      "Image": 0.005666,
+      "Link": 0.000291,
+      "Raid": 0.000145,
+      "Sticker": 0.046128,
+      "Text": 0.947552,
+      "Video": 0.000218
+     },
+     "sections[].items[].sender": {
+      "NPC": 0.65008,
+      "Player": 0.231077,
+      "PlayerAuto": 0.075984,
+      "System": 0.042859
+     },
+     "sections[].items[].voice": {
+      "unknown": 1.0
+     }
+    },
+    "items": {
+     "sections": 786,
+     "sections[].items": 13766,
+     "sections[].items[].next": 14301,
+     "sections[].start": 794
+    },
+    "null_rate": {
+     "contact": 0.0,
+     "sections[].items[].option_text": 0.772556,
+     "sections[].items[].text": 0.029493,
+     "signature": 0.294574,
+     "upstream.version": 0.0
+    },
+    "rows": 774
+   },
+   "JP": {
+    "enum_share": {
+     "sections[].items[].item_type": {
+      "Image": 0.005666,
+      "Link": 0.000291,
+      "Raid": 0.000145,
+      "Sticker": 0.046128,
+      "Text": 0.947552,
+      "Video": 0.000218
+     },
+     "sections[].items[].sender": {
+      "NPC": 0.65008,
+      "Player": 0.231077,
+      "PlayerAuto": 0.075984,
+      "System": 0.042859
+     },
+     "sections[].items[].voice": {
+      "unknown": 1.0
+     }
+    },
+    "items": {
+     "sections": 786,
+     "sections[].items": 13766,
+     "sections[].items[].next": 14301,
+     "sections[].start": 794
+    },
+    "null_rate": {
+     "contact": 0.0,
+     "sections[].items[].option_text": 0.772556,
+     "sections[].items[].text": 0.029493,
+     "signature": 0.294574,
+     "upstream.version": 0.0
+    },
+    "rows": 774
+   }
+  },
+  "missions": {
+   "CHS": {
+    "enum_share": {
+     "scripts[].events[].kind": {
+      "option": 0.204638,
+      "talk": 0.407699,
+      "trigger": 0.146447,
+      "wait": 0.241216
+     },
+     "scripts[].events[].reply.voice": {
+      "generic": 0.003931,
+      "unknown": 7.3e-05,
+      "unvoiced": 0.607439,
+      "voiced": 0.388557
+     },
+     "scripts[].events[].voice": {
+      "generic": 0.001905,
+      "unknown": 0.000236,
+      "unvoiced": 0.683603,
+      "voiced": 0.314256
+     },
+     "sub_type": {
+      "Activity": 0.27793,
+      "Endmost": 0.005495,
+      "Game": 0.059982,
+      "Rogue": 0.000916,
+      "System": 0.031593,
+      "World": 0.01511
+     },
+     "type": {
+      "Branch": 0.710165,
+      "Companion": 0.030678,
+      "Daily": 0.043498,
+      "Gap": 0.048535,
+      "Main": 0.167125
+     }
+    },
+    "items": {
+     "next": 0,
+     "scripts": 13175,
+     "scripts[].events": 157361,
+     "steps": 14847
+    },
+    "null_rate": {
+     "chapter_id": 0.623168,
+     "name": 0.375,
+     "scripts[].events[].carrier": 0.007866,
+     "scripts[].events[].reply": 0.146761,
+     "scripts[].events[].reply.speaker": 0.082836,
+     "scripts[].events[].reply.text": 7.3e-05,
+     "scripts[].events[].reply.voice_id": 0.605401,
+     "scripts[].events[].speaker": 0.319168,
+     "scripts[].events[].text": 1.4e-05,
+     "scripts[].events[].trigger": 0.000186,
+     "scripts[].events[].voice_id": 0.684047,
+     "steps[].desc": 0.407153,
+     "steps[].target": 0.400013,
+     "sub_type": 0.608974,
+     "upstream.version": 0.0,
+     "world_id": 0.138736
+    },
+    "rows": 2184
+   },
+   "EN": {
+    "enum_share": {
+     "scripts[].events[].kind": {
+      "option": 0.204638,
+      "talk": 0.407699,
+      "trigger": 0.146447,
+      "wait": 0.241216
+     },
+     "scripts[].events[].reply.voice": {
+      "generic": 0.003931,
+      "unknown": 7.3e-05,
+      "unvoiced": 0.607439,
+      "voiced": 0.388557
+     },
+     "scripts[].events[].voice": {
+      "generic": 0.001905,
+      "unknown": 0.000236,
+      "unvoiced": 0.683603,
+      "voiced": 0.314256
+     },
+     "sub_type": {
+      "Activity": 0.27793,
+      "Endmost": 0.005495,
+      "Game": 0.059982,
+      "Rogue": 0.000916,
+      "System": 0.031593,
+      "World": 0.01511
+     },
+     "type": {
+      "Branch": 0.710165,
+      "Companion": 0.030678,
+      "Daily": 0.043498,
+      "Gap": 0.048535,
+      "Main": 0.167125
+     }
+    },
+    "items": {
+     "next": 0,
+     "scripts": 13175,
+     "scripts[].events": 157361,
+     "steps": 14847
+    },
+    "null_rate": {
+     "chapter_id": 0.623168,
+     "name": 0.375,
+     "scripts[].events[].carrier": 0.007866,
+     "scripts[].events[].reply": 0.146761,
+     "scripts[].events[].reply.speaker": 0.082836,
+     "scripts[].events[].reply.text": 7.3e-05,
+     "scripts[].events[].reply.voice_id": 0.605401,
+     "scripts[].events[].speaker": 0.319168,
+     "scripts[].events[].text": 1.4e-05,
+     "scripts[].events[].trigger": 0.000186,
+     "scripts[].events[].voice_id": 0.684047,
+     "steps[].desc": 0.407153,
+     "steps[].target": 0.400013,
+     "sub_type": 0.608974,
+     "upstream.version": 0.0,
+     "world_id": 0.138736
+    },
+    "rows": 2184
+   },
+   "JP": {
+    "enum_share": {
+     "scripts[].events[].kind": {
+      "option": 0.204638,
+      "talk": 0.407699,
+      "trigger": 0.146447,
+      "wait": 0.241216
+     },
+     "scripts[].events[].reply.voice": {
+      "generic": 0.003931,
+      "unknown": 7.3e-05,
+      "unvoiced": 0.607439,
+      "voiced": 0.388557
+     },
+     "scripts[].events[].voice": {
+      "generic": 0.001905,
+      "unknown": 0.000236,
+      "unvoiced": 0.683603,
+      "voiced": 0.314256
+     },
+     "sub_type": {
+      "Activity": 0.27793,
+      "Endmost": 0.005495,
+      "Game": 0.059982,
+      "Rogue": 0.000916,
+      "System": 0.031593,
+      "World": 0.01511
+     },
+     "type": {
+      "Branch": 0.710165,
+      "Companion": 0.030678,
+      "Daily": 0.043498,
+      "Gap": 0.048535,
+      "Main": 0.167125
+     }
+    },
+    "items": {
+     "next": 0,
+     "scripts": 13175,
+     "scripts[].events": 157361,
+     "steps": 14847
+    },
+    "null_rate": {
+     "chapter_id": 0.623168,
+     "name": 0.375,
+     "scripts[].events[].carrier": 0.007866,
+     "scripts[].events[].reply": 0.146761,
+     "scripts[].events[].reply.speaker": 0.082836,
+     "scripts[].events[].reply.text": 7.3e-05,
+     "scripts[].events[].reply.voice_id": 0.605401,
+     "scripts[].events[].speaker": 0.319168,
+     "scripts[].events[].text": 1.4e-05,
+     "scripts[].events[].trigger": 0.000186,
+     "scripts[].events[].voice_id": 0.684047,
+     "steps[].desc": 0.407153,
+     "steps[].target": 0.400013,
+     "sub_type": 0.608974,
+     "upstream.version": 0.0,
+     "world_id": 0.138736
+    },
+    "rows": 2184
+   }
+  },
+  "sentences": {
+   "CHS": {
+    "enum_share": {
+     "voice": {
+      "generic": 0.002537,
+      "unknown": 0.000221,
+      "unvoiced": 0.650273,
+      "voiced": 0.346969
+     }
+    },
+    "items": {
+     "sources": 187546
+    },
+    "null_rate": {
+     "speaker": 0.284533,
+     "text": 0.001715,
+     "upstream.version": 0.0,
+     "voice_id": 0.653268
+    },
+    "rows": 244379
+   },
+   "EN": {
+    "enum_share": {
+     "voice": {
+      "generic": 0.002537,
+      "unknown": 0.000221,
+      "unvoiced": 0.650273,
+      "voiced": 0.346969
+     }
+    },
+    "items": {
+     "sources": 187546
+    },
+    "null_rate": {
+     "speaker": 0.284533,
+     "text": 0.001715,
+     "upstream.version": 0.0,
+     "voice_id": 0.653268
+    },
+    "rows": 244379
+   },
+   "JP": {
+    "enum_share": {
+     "voice": {
+      "generic": 0.002537,
+      "unknown": 0.000221,
+      "unvoiced": 0.650273,
+      "voiced": 0.346969
+     }
+    },
+    "items": {
+     "sources": 187546
+    },
+    "null_rate": {
+     "speaker": 0.284533,
+     "text": 0.001715,
+     "upstream.version": 0.0,
+     "voice_id": 0.653268
+    },
+    "rows": 244379
+   }
+  },
+  "terms": {
+   "CHS": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 118528
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 8e-06
+    },
+    "rows": 118528
+   },
+   "JP": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 118528
+   }
+  }
+ },
+ "upstream": {
+  "commit": "724b139d8c9c32d12552eb95745a4fee72bfe48b",
+  "version": "4.6.0"
+ }
+}

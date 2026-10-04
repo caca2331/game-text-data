@@ -1,0 +1,436 @@
+{
+ "contracts": {
+  "quests": "genshin.quests/1",
+  "reminders": "genshin.reminders/1",
+  "terms": "genshin.terms/1"
+ },
+ "tables": {
+  "quests": {
+   "CHS": {
+    "enum_share": {
+     "dialog[].attribution": {
+      "explicit": 0.904378,
+      "inferred": 0.095622
+     },
+     "dialog[].role.type": {
+      "TALK_ROLE_BLACK_SCREEN": 0.005828,
+      "TALK_ROLE_CONSEQUENT_BLACK_SCREEN": 1.7e-05,
+      "TALK_ROLE_CONSEQUENT_NEED_CLICK_BLACK_SCREEN": 0.000282,
+      "TALK_ROLE_GADGET": 0.000558,
+      "TALK_ROLE_MATE_AVATAR": 0.000706,
+      "TALK_ROLE_NEED_CLICK_BLACK_SCREEN": 0.002353,
+      "TALK_ROLE_NONE": 0.002934,
+      "TALK_ROLE_NPC": 0.839343,
+      "TALK_ROLE_PLAYER": 0.147978
+     },
+     "dialog[].voice": {
+      "unknown": 1.0
+     },
+     "steps[].fail_cond": {
+      "QUEST_HIDDEN": 0.196453
+     },
+     "tag": {
+      "MAINQUEST_TAG_ACTIVITY": 0.041204,
+      "MAINQUEST_TAG_ANECDOTE": 0.00317,
+      "MAINQUEST_TAG_FLOWERLAND": 0.005886,
+      "MAINQUEST_TAG_GUIDE": 0.087163,
+      "MAINQUEST_TAG_NATLAN_TRIBAL": 0.007698,
+      "MAINQUEST_TAG_RANK_ZERO_WQ": 0.047996,
+      "MAINQUEST_TAG_REPUTATION": 0.019923,
+      "MAINQUEST_TAG_RESIDENT_ACTIVITY": 0.002264,
+      "MAINQUEST_TAG_SNEZ_QUEEN": 0.001358,
+      "MAINQUEST_TAG_THESPIA": 0.004528
+     }
+    },
+    "items": {
+     "dialog": 351058,
+     "dialog[].next": 331985,
+     "steps": 33214
+    },
+    "null_rate": {
+     "chapter_id": 0.720172,
+     "chapter_num": 0.969663,
+     "chapter_title": 0.969663,
+     "description": 0.153045,
+     "dialog[].role": 0.0,
+     "dialog[].speaker": 0.941118,
+     "dialog[].text": 0.004731,
+     "name": 0.029205,
+     "series": 0.764772,
+     "steps[].desc": 0.123141,
+     "steps[].fail_cond": 0.803547,
+     "steps[].order": 0.46375,
+     "tag": 0.778809,
+     "upstream.version": 0.0
+    },
+    "rows": 4417
+   },
+   "EN": {
+    "enum_share": {
+     "dialog[].attribution": {
+      "explicit": 0.904378,
+      "inferred": 0.095622
+     },
+     "dialog[].role.type": {
+      "TALK_ROLE_BLACK_SCREEN": 0.005828,
+      "TALK_ROLE_CONSEQUENT_BLACK_SCREEN": 1.7e-05,
+      "TALK_ROLE_CONSEQUENT_NEED_CLICK_BLACK_SCREEN": 0.000282,
+      "TALK_ROLE_GADGET": 0.000558,
+      "TALK_ROLE_MATE_AVATAR": 0.000706,
+      "TALK_ROLE_NEED_CLICK_BLACK_SCREEN": 0.002353,
+      "TALK_ROLE_NONE": 0.002934,
+      "TALK_ROLE_NPC": 0.839343,
+      "TALK_ROLE_PLAYER": 0.147978
+     },
+     "dialog[].voice": {
+      "unknown": 1.0
+     },
+     "steps[].fail_cond": {
+      "QUEST_HIDDEN": 0.196453
+     },
+     "tag": {
+      "MAINQUEST_TAG_ACTIVITY": 0.041204,
+      "MAINQUEST_TAG_ANECDOTE": 0.00317,
+      "MAINQUEST_TAG_FLOWERLAND": 0.005886,
+      "MAINQUEST_TAG_GUIDE": 0.087163,
+      "MAINQUEST_TAG_NATLAN_TRIBAL": 0.007698,
+      "MAINQUEST_TAG_RANK_ZERO_WQ": 0.047996,
+      "MAINQUEST_TAG_REPUTATION": 0.019923,
+      "MAINQUEST_TAG_RESIDENT_ACTIVITY": 0.002264,
+      "MAINQUEST_TAG_SNEZ_QUEEN": 0.001358,
+      "MAINQUEST_TAG_THESPIA": 0.004528
+     }
+    },
+    "items": {
+     "dialog": 351058,
+     "dialog[].next": 331985,
+     "steps": 33214
+    },
+    "null_rate": {
+     "chapter_id": 0.720172,
+     "chapter_num": 0.969663,
+     "chapter_title": 0.969663,
+     "description": 0.424043,
+     "dialog[].role": 0.0,
+     "dialog[].speaker": 0.941403,
+     "dialog[].text": 0.012337,
+     "name": 0.410686,
+     "series": 0.764772,
+     "steps[].desc": 0.366653,
+     "steps[].fail_cond": 0.803547,
+     "steps[].order": 0.46375,
+     "tag": 0.778809,
+     "upstream.version": 0.0
+    },
+    "rows": 4417
+   },
+   "JP": {
+    "enum_share": {
+     "dialog[].attribution": {
+      "explicit": 0.904378,
+      "inferred": 0.095622
+     },
+     "dialog[].role.type": {
+      "TALK_ROLE_BLACK_SCREEN": 0.005828,
+      "TALK_ROLE_CONSEQUENT_BLACK_SCREEN": 1.7e-05,
+      "TALK_ROLE_CONSEQUENT_NEED_CLICK_BLACK_SCREEN": 0.000282,
+      "TALK_ROLE_GADGET": 0.000558,
+      "TALK_ROLE_MATE_AVATAR": 0.000706,
+      "TALK_ROLE_NEED_CLICK_BLACK_SCREEN": 0.002353,
+      "TALK_ROLE_NONE": 0.002934,
+      "TALK_ROLE_NPC": 0.839343,
+      "TALK_ROLE_PLAYER": 0.147978
+     },
+     "dialog[].voice": {
+      "unknown": 1.0
+     },
+     "steps[].fail_cond": {
+      "QUEST_HIDDEN": 0.196453
+     },
+     "tag": {
+      "MAINQUEST_TAG_ACTIVITY": 0.041204,
+      "MAINQUEST_TAG_ANECDOTE": 0.00317,
+      "MAINQUEST_TAG_FLOWERLAND": 0.005886,
+      "MAINQUEST_TAG_GUIDE": 0.087163,
+      "MAINQUEST_TAG_NATLAN_TRIBAL": 0.007698,
+      "MAINQUEST_TAG_RANK_ZERO_WQ": 0.047996,
+      "MAINQUEST_TAG_REPUTATION": 0.019923,
+      "MAINQUEST_TAG_RESIDENT_ACTIVITY": 0.002264,
+      "MAINQUEST_TAG_SNEZ_QUEEN": 0.001358,
+      "MAINQUEST_TAG_THESPIA": 0.004528
+     }
+    },
+    "items": {
+     "dialog": 351058,
+     "dialog[].next": 331985,
+     "steps": 33214
+    },
+    "null_rate": {
+     "chapter_id": 0.720172,
+     "chapter_num": 0.969663,
+     "chapter_title": 0.969663,
+     "description": 0.424043,
+     "dialog[].role": 0.0,
+     "dialog[].speaker": 0.9414,
+     "dialog[].text": 0.012383,
+     "name": 0.41046,
+     "series": 0.764772,
+     "steps[].desc": 0.368549,
+     "steps[].fail_cond": 0.803547,
+     "steps[].order": 0.46375,
+     "tag": 0.778809,
+     "upstream.version": 0.0
+    },
+    "rows": 4417
+   }
+  },
+  "reminders": {
+   "CHS": {
+    "enum_share": {
+     "cyclic": {
+      "True": 1.0
+     },
+     "lines[].style": {
+      "AbyssVsLunarisOnBottom": 0.000269,
+      "AbyssVsLunarisOnTop": 0.001451,
+      "AbyssWarReminder": 0.002633,
+      "AbyssWhisper": 0.000484,
+      "Banner": 0.091627,
+      "BottomLine": 0.001935,
+      "CombatChat": 0.044443,
+      "CommonSpecialReminderNormal": 0.000161,
+      "CommonSpecialReminderWarning": 5.4e-05,
+      "DialogueWithPortrait": 0.016552,
+      "DrillBattleReminder": 0.001612,
+      "EscoffierCookingChat": 0.000484,
+      "EventPromptDown": 0.003977,
+      "HerculesBattle": 0.000484,
+      "InLevelTowerOfHanoiReminder": 0.000322,
+      "InfoTextDialog": 0.001021,
+      "InstituteHomeInfo": 0.000914,
+      "InstituteHomeWarning": 0.000591,
+      "InteractionPromptUI": 0.001182,
+      "MarionetteTeaTimeReminder": 0.000107,
+      "MoonInfoReminder": 0.030095,
+      "NarrationChat": 5.4e-05,
+      "NoText": 0.001236,
+      "Normal": 0.749624,
+      "PenumbraInfo": 5.4e-05,
+      "PenumbraMiniStory": 0.00043,
+      "PenumbraStory": 0.005105,
+      "PenumbraTarget": 5.4e-05,
+      "RankedMatchFeverReminder": 0.000107,
+      "RedBanner": 5.4e-05,
+      "RobotAbyssalNarrate": 0.000269,
+      "RobotAbyssalNarrateBroken": 0.000269,
+      "RobotAbyssalWarning": 5.4e-05,
+      "RoleCombatBanner": 0.002096,
+      "SneakLEReminder": 5.4e-05,
+      "SpecialFocusAttackReminder": 0.000269,
+      "SpecialReminderOnBottom": 0.002472,
+      "SpecialReminderOnTop": 0.008867,
+      "SpecialReminderV2OnBottom": 0.000376,
+      "SpecialReminderV2OnTop": 0.000806,
+      "TpsGlassesChat": 0.008222,
+      "TradeShowBonus": 0.000914,
+      "VarkaReminder": 0.000537,
+      "VarkaReminderBottom": 0.000752,
+      "VarkaReminderLocked": 5.4e-05,
+      "VaultDungeonRadio": 0.000484,
+      "WeaponQuestSnezhnayaTop": 0.000376,
+      "WhiteMessage": 0.013489,
+      "WitchNicoleReminder": 0.000914,
+      "WxycReminder": 0.001612
+     },
+     "lines[].voice": {
+      "unvoiced": 0.759566,
+      "voiced": 0.240434
+     }
+    },
+    "items": {
+     "lines": 18608
+    },
+    "null_rate": {
+     "lines[].speaker": 0.165896,
+     "lines[].text": 0.003923,
+     "upstream.version": 0.0
+    },
+    "rows": 12703
+   },
+   "EN": {
+    "enum_share": {
+     "cyclic": {
+      "True": 1.0
+     },
+     "lines[].style": {
+      "AbyssVsLunarisOnBottom": 0.000269,
+      "AbyssVsLunarisOnTop": 0.001451,
+      "AbyssWarReminder": 0.002633,
+      "AbyssWhisper": 0.000484,
+      "Banner": 0.091627,
+      "BottomLine": 0.001935,
+      "CombatChat": 0.044443,
+      "CommonSpecialReminderNormal": 0.000161,
+      "CommonSpecialReminderWarning": 5.4e-05,
+      "DialogueWithPortrait": 0.016552,
+      "DrillBattleReminder": 0.001612,
+      "EscoffierCookingChat": 0.000484,
+      "EventPromptDown": 0.003977,
+      "HerculesBattle": 0.000484,
+      "InLevelTowerOfHanoiReminder": 0.000322,
+      "InfoTextDialog": 0.001021,
+      "InstituteHomeInfo": 0.000914,
+      "InstituteHomeWarning": 0.000591,
+      "InteractionPromptUI": 0.001182,
+      "MarionetteTeaTimeReminder": 0.000107,
+      "MoonInfoReminder": 0.030095,
+      "NarrationChat": 5.4e-05,
+      "NoText": 0.001236,
+      "Normal": 0.749624,
+      "PenumbraInfo": 5.4e-05,
+      "PenumbraMiniStory": 0.00043,
+      "PenumbraStory": 0.005105,
+      "PenumbraTarget": 5.4e-05,
+      "RankedMatchFeverReminder": 0.000107,
+      "RedBanner": 5.4e-05,
+      "RobotAbyssalNarrate": 0.000269,
+      "RobotAbyssalNarrateBroken": 0.000269,
+      "RobotAbyssalWarning": 5.4e-05,
+      "RoleCombatBanner": 0.002096,
+      "SneakLEReminder": 5.4e-05,
+      "SpecialFocusAttackReminder": 0.000269,
+      "SpecialReminderOnBottom": 0.002472,
+      "SpecialReminderOnTop": 0.008867,
+      "SpecialReminderV2OnBottom": 0.000376,
+      "SpecialReminderV2OnTop": 0.000806,
+      "TpsGlassesChat": 0.008222,
+      "TradeShowBonus": 0.000914,
+      "VarkaReminder": 0.000537,
+      "VarkaReminderBottom": 0.000752,
+      "VarkaReminderLocked": 5.4e-05,
+      "VaultDungeonRadio": 0.000484,
+      "WeaponQuestSnezhnayaTop": 0.000376,
+      "WhiteMessage": 0.013489,
+      "WitchNicoleReminder": 0.000914,
+      "WxycReminder": 0.001612
+     },
+     "lines[].voice": {
+      "unvoiced": 0.759566,
+      "voiced": 0.240434
+     }
+    },
+    "items": {
+     "lines": 18608
+    },
+    "null_rate": {
+     "lines[].speaker": 0.23807,
+     "lines[].text": 0.126558,
+     "upstream.version": 0.0
+    },
+    "rows": 12703
+   },
+   "JP": {
+    "enum_share": {
+     "cyclic": {
+      "True": 1.0
+     },
+     "lines[].style": {
+      "AbyssVsLunarisOnBottom": 0.000269,
+      "AbyssVsLunarisOnTop": 0.001451,
+      "AbyssWarReminder": 0.002633,
+      "AbyssWhisper": 0.000484,
+      "Banner": 0.091627,
+      "BottomLine": 0.001935,
+      "CombatChat": 0.044443,
+      "CommonSpecialReminderNormal": 0.000161,
+      "CommonSpecialReminderWarning": 5.4e-05,
+      "DialogueWithPortrait": 0.016552,
+      "DrillBattleReminder": 0.001612,
+      "EscoffierCookingChat": 0.000484,
+      "EventPromptDown": 0.003977,
+      "HerculesBattle": 0.000484,
+      "InLevelTowerOfHanoiReminder": 0.000322,
+      "InfoTextDialog": 0.001021,
+      "InstituteHomeInfo": 0.000914,
+      "InstituteHomeWarning": 0.000591,
+      "InteractionPromptUI": 0.001182,
+      "MarionetteTeaTimeReminder": 0.000107,
+      "MoonInfoReminder": 0.030095,
+      "NarrationChat": 5.4e-05,
+      "NoText": 0.001236,
+      "Normal": 0.749624,
+      "PenumbraInfo": 5.4e-05,
+      "PenumbraMiniStory": 0.00043,
+      "PenumbraStory": 0.005105,
+      "PenumbraTarget": 5.4e-05,
+      "RankedMatchFeverReminder": 0.000107,
+      "RedBanner": 5.4e-05,
+      "RobotAbyssalNarrate": 0.000269,
+      "RobotAbyssalNarrateBroken": 0.000269,
+      "RobotAbyssalWarning": 5.4e-05,
+      "RoleCombatBanner": 0.002096,
+      "SneakLEReminder": 5.4e-05,
+      "SpecialFocusAttackReminder": 0.000269,
+      "SpecialReminderOnBottom": 0.002472,
+      "SpecialReminderOnTop": 0.008867,
+      "SpecialReminderV2OnBottom": 0.000376,
+      "SpecialReminderV2OnTop": 0.000806,
+      "TpsGlassesChat": 0.008222,
+      "TradeShowBonus": 0.000914,
+      "VarkaReminder": 0.000537,
+      "VarkaReminderBottom": 0.000752,
+      "VarkaReminderLocked": 5.4e-05,
+      "VaultDungeonRadio": 0.000484,
+      "WeaponQuestSnezhnayaTop": 0.000376,
+      "WhiteMessage": 0.013489,
+      "WitchNicoleReminder": 0.000914,
+      "WxycReminder": 0.001612
+     },
+     "lines[].voice": {
+      "unvoiced": 0.759566,
+      "voiced": 0.240434
+     }
+    },
+    "items": {
+     "lines": 18608
+    },
+    "null_rate": {
+     "lines[].speaker": 0.23807,
+     "lines[].text": 0.126182,
+     "upstream.version": 0.0
+    },
+    "rows": 12703
+   }
+  },
+  "terms": {
+   "CHS": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 247630
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.004515
+    },
+    "rows": 247630
+   },
+   "JP": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.004555
+    },
+    "rows": 247630
+   }
+  }
+ },
+ "upstream": {
+  "commit": "792978e5503ecfba73dcb3562ed44a0d35a2abe2",
+  "version": "7.1.0"
+ }
+}
