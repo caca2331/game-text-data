@@ -4,7 +4,8 @@
   "messages": "starrail.messages/1",
   "missions": "starrail.missions/1",
   "sentences": "starrail.sentences/1",
-  "terms": "starrail.terms/1"
+  "terms": "starrail.terms/1",
+  "textjoins": "starrail.textjoins/1"
  },
  "tables": {
   "dialogues": {
@@ -510,6 +511,41 @@
      "text": 0.0
     },
     "rows": 118528
+   }
+  },
+  "textjoins": {
+   "CHS": {
+    "enum_share": {},
+    "items": {
+     "items": 676
+    },
+    "null_rate": {
+     "default": 0.0,
+     "items[]": 0.195266
+    },
+    "rows": 191
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {
+     "items": 676
+    },
+    "null_rate": {
+     "default": 0.0,
+     "items[]": 0.195266
+    },
+    "rows": 191
+   },
+   "JP": {
+    "enum_share": {},
+    "items": {
+     "items": 676
+    },
+    "null_rate": {
+     "default": 0.0,
+     "items[]": 0.195266
+    },
+    "rows": 191
    }
   }
  },

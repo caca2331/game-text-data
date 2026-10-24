@@ -26,8 +26,8 @@ BASE_LANG = "CHS"
 # 上游文本里的动态占位符，形如 {TEXTJOIN#87}
 _TEXTJOIN = re.compile(r"\{TEXTJOIN#(\d+)\}")
 
-# 五份产物（报告逐份校验多语种对齐）
-OUTPUTS = ("missions", "dialogues", "messages", "sentences", "terms")
+# 六份产物（报告逐份校验多语种对齐）
+OUTPUTS = ("missions", "dialogues", "messages", "sentences", "terms", "textjoins")
 
 TERM_MAX_CHARS = 16
 """短名词的"短"：基准语种（CHS）≤ 16 字。和 genshin 同一个口径（那边的依据是去重后的
@@ -236,6 +236,12 @@ class Emitter:
             self.per_lang[lang]["terms_missing"] += 1
         return {"id": text_hash, "text": value}
 
+    def _textjoin_row(self, r, table, lang, meta):
+        """`{TEXTJOIN#n}` 的一行：候选文本（按上游 `TextJoinItemList` 的顺序）和默认项的下标。
+        候选查不到计 `textjoin_item_unresolved`（走 `_text`，分出缺译与上游各语种均无）。"""
+        return {"id": r["id"], "default": r["default"],
+                "items": [self._text(table, h, lang, "textjoin_item") for h in r["items"]]}
+
     def _drop_unused_langs(self, kinds):
         """删掉不再产出的语种留下的旧文件。
 
@@ -309,6 +315,9 @@ class Emitter:
                 name, _iter_jsonl(os.path.join(self.build, src)), builder, tables, meta)
         paths["terms"] = self._emit_set(
             "terms", (h for h, v in self._base.items() if is_term(v)), self._term_row, tables, meta)
+        paths["textjoins"] = self._emit_set(
+            "textjoins", _iter_jsonl(os.path.join(self.build, "index", "textjoins.jsonl")),
+            self._textjoin_row, tables, meta)
 
         # 对话事件计数（各语种相同，取基准语种统计即可）
         for lang in textmap.LANGS:

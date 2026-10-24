@@ -8,9 +8,9 @@
 
 | 游戏 | 上游数据源 | 现状 |
 | --- | --- | --- |
-| [原神](docs/genshin/README.md)（`genshin`） | [Dimbreath/animegamedata2](https://gitlab.com/Dimbreath/animegamedata2) | **已跑通**。当前 7.1.0，4417 个任务 / 35.1 万个对话节点 + 1.27 万条语音字幕链，多语言逐行对齐（默认中英日） |
+| [原神](docs/genshin/README.md)（`genshin`） | [Dimbreath/animegamedata2](https://gitlab.com/Dimbreath/animegamedata2) | **已跑通**。当前 7.1.0，4417 个任务 / 35.1 万个对话节点 + 1.27 万条语音字幕链 + 6636 条阅读面板长文本，多语言逐行对齐（默认中英日） |
 | [崩坏：星穹铁道](docs/starrail/README.md)（`starrail`） | [Dimbreath/turnbasedgamedata](https://gitlab.com/Dimbreath/turnbasedgamedata) | **已跑通**。当前 4.6.0，2184 个任务 / 9.6 万个对话事件（含分支）+ 13 890 个任务外对话脚本 + 774 组短信 + 全量台词表 24.4 万句，多语言逐行对齐（默认中英日） |
-| [绝区零](docs/zzz/README.md)（`zzz`） | [dimbreath/ZenlessData](https://git.mero.moe/dimbreath/ZenlessData)（Gitea） | **已跑通**。当前 3.2.0，3.3 万个场景 / 24.1 万条台词 / 1.4 万个任务 / 961 组短信分支 + 13.8 万条散条目，多语言逐行对齐（默认中英日） |
+| [绝区零](docs/zzz/README.md)（`zzz`） | [dimbreath/ZenlessData](https://git.mero.moe/dimbreath/ZenlessData)（Gitea） | **已跑通**。当前 3.3.0，3.4 万个场景 / 24.8 万条台词 / 1.5 万个任务 / 975 组短信分支 + 14.2 万条散条目，多语言逐行对齐（默认中英日） |
 
 每款游戏的产出、字段与取舍见上表链到的说明。
 

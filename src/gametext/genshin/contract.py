@@ -50,7 +50,7 @@ CONTRACTS = Contracts("genshin", {
         F("dialog[].next", "list", None, None, "后继节点的 dialog_id"),
         F("dialog[].next[]", "int", None, None, "后继节点的 dialog_id"),
         F("dialog[].source", "str", None, None, "上游文件路径，便于定位"),
-        F("dialog[].voice", "str", None, VOICE, "配音标记；任务对话一律 unknown"),
+        F("dialog[].voice", "str", None, VOICE, "配音标记：Voice 的 Dialog 映射命中为 voiced，否则 unknown"),
         F("upstream", "object", None, None, "上游快照"),
         F("upstream.commit", "str", None, None, "上游 commit"),
         F("upstream.version", "str", "上游提交标题里找不到版本号", None, "游戏版本"),
@@ -83,7 +83,7 @@ CONTRACTS = Contracts("genshin", {
           "上屏样式，上游枚举原样；Normal 是屏幕下方的字幕带"),
         F("lines[].show_time", "number", None, None, "显示时长（秒）"),
         F("lines[].delay", "number", None, None, "出现前的延迟（秒）"),
-        F("lines[].voice", "str", None, VOICE, "配音标记：hasAudio true → voiced、false → unvoiced"),
+        F("lines[].voice", "str", None, VOICE, "配音标记：Voice 的 DungeonReminder 映射或 hasAudio true → voiced；否则依 hasAudio"),
         F("upstream", "object", None, None, "上游快照"),
         F("upstream.commit", "str", None, None, "上游 commit"),
         F("upstream.version", "str", "上游提交标题里找不到版本号", None, "游戏版本"),
@@ -98,4 +98,30 @@ CONTRACTS = Contracts("genshin", {
         "各语种行数相同、逐行 id 相同",
         "id 全表唯一",
     ]),
+    "pronouns": Table(1, [
+        F("id", "str", None, None,
+          "键（如 INFO_MALE_PRONOUN_HE、INFO_FEMALE_PLAYER_END01），台词里 `{PLAYERAVATAR#SEXPRO[甲（为男时）|乙（为女时）]}` / "
+          "`{MATEAVATAR#SEXPRO[…]}` 引用它；键名里的 MALE / FEMALE 不表示取哪个"),
+        F("text", "str", "本语种缺译，或上游查不到", None, "称谓或句尾文本"),
+    ], [
+        "各语种行数相同、逐行 id 相同",
+        "id 全表唯一，按 id 排序",
+    ]),
+    "readables": Table(1, [
+        F("id", "int", None, None,
+          "出处条目的 id：source 为 Readable/ 时是 LocalizationExcelConfigData 的行 id（那一行给出各语种在 "
+          "Readable/ 下的文件，阅读界面 DocumentExcelConfigData 引用它），否则是 source 那张配置表这一行的 id（FetterStoryExcelConfigData 是 fetterId）"),
+        F("source", "str", None,
+          Open({"Readable/", "MailExcelConfigData", "TutorialDetailExcelConfigData",
+                "AlchemySimLetterExcelConfigData", "FetterStoryExcelConfigData"}),
+          "出处：Readable/ 是上游的书籍、武器 / 圣遗物故事、信件等正文的目录，其余是阅读界面的配置表名（信件、教程说明页、活动来信、角色故事）"),
+        F("text", "str", "本语种缺文本（本地化记录没给这个语种的文件、文件不存在或为空、TextMap 查不到）", None,
+          "全文，不切段：段落之间是真换行（TextMap 里的字面量 \\n 换成了换行），首尾空白去掉，"
+          "占位与富文本标记原样保留"),
+    ], [
+        "各语种行数相同、逐行 id 相同",
+        "(source, id) 全表唯一；id 单独不唯一（不同 source 的 id 空间会撞）",
+        "先 Readable/、再按固定顺序的各配置表，同一 source 内按 id 排序",
+        "行集合只看基准语种（CHS）：CHS 没有文本的、CHS 文本与任务对话或语音字幕里某一句整段相同的都不收",
+    ], unique_id=False),
 })

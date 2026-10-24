@@ -1,6 +1,6 @@
 # genshin：原神的解析层
 
-从社区解包数据（Dimbreath/animegamedata2）离线提取原神任务的元数据与对话、语音字幕、短名词，输出多语言逐行对齐的 JSONL。本目录只 import `gametext.core`（快照、CLI、产物包、契约检查机制），不 import 别的游戏；仓库整体约定见根 [AGENTS.md](../../../AGENTS.md)。现状与数字见 [docs/genshin/README.md](../../../docs/genshin/README.md#现状)。
+从社区解包数据（Dimbreath/animegamedata2）离线提取原神任务的元数据与对话、语音字幕、短名词、称谓、阅读面板长文本，输出多语言逐行对齐的 JSONL。本目录只 import `gametext.core`（快照、CLI、产物包、契约检查机制），不 import 别的游戏；仓库整体约定见根 [AGENTS.md](../../../AGENTS.md)。现状与数字见 [docs/genshin/README.md](../../../docs/genshin/README.md#现状)。
 
 ```text
 snapshot → upstream/genshin/ ─index→ build/genshin/index/ ─assemble→ build/genshin/assembled.jsonl（文本仍是 hash） ─emit→ corpus/genshin/

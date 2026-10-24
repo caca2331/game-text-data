@@ -1,4 +1,4 @@
-"""原神：从 Dimbreath/animegamedata2 提取任务、语音字幕与短名词。不变量见同目录 AGENTS.md。
+"""原神：从 Dimbreath/animegamedata2 提取任务、语音字幕、短名词、称谓与阅读面板长文本。不变量见同目录 AGENTS.md。
 
     snapshot → upstream/genshin ─index→ build/genshin/index ─assemble→ build/genshin/assembled.jsonl
     （文本仍是 hash） ─emit→ corpus/genshin
@@ -11,7 +11,7 @@ import re
 
 from ..core.game import Game
 from ..core.snapshot import Upstream
-from . import report, textmap
+from . import readable, report, textmap
 from .assemble import Assembler
 from .contract import CONTRACTS
 from .emit import OUTPUTS, Emitter
@@ -27,9 +27,10 @@ UPSTREAM = Upstream(
     repo="https://gitlab.com/Dimbreath/animegamedata2.git",
     branch="main",
     # 只取用得上的目录。全量克隆包含 Ability/Scene 等大量无关数据，没必要。
-    always=("/ExcelBinOutput/", "/BinOutput/Talk/", "/BinOutput/Quest/", "/BinOutput/CodexQuest/",
+    always=("/ExcelBinOutput/", "/BinOutput/Talk/", "/BinOutput/Quest/", "/BinOutput/CodexQuest/", "/BinOutput/Voice/",
             "/README.md"),
-    textmap_patterns=textmap.sparse_patterns,
+    # 按语种挑的文件：TextMap 与 Readable/（阅读面板的正文，每个语种一个目录）
+    textmap_patterns=lambda langs: textmap.sparse_patterns(langs) + readable.sparse_patterns(langs),
     # 提交标题形如 CNRELWin6.6.0_R44873995_S44916582_D44916582
     version_re=re.compile(r"[A-Z]+Win(\d+\.\d+\.\d+)"),
     # 数据提交的间隔常态是 1–2 个月
@@ -42,7 +43,10 @@ def _index(args):
     ix = Indexer(args.upstream, args.build)
     talk_ids = ix.index_talks()
     ix.index_quests(talk_ids)
+    ix.index_voices()
     ix.index_reminders()
+    ix.index_pronouns()
+    ix.index_readables()
     return ix.finish()
 
 

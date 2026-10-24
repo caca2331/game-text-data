@@ -3,7 +3,10 @@
 产物（都在 build/index/ 下）：
     talks.jsonl    每行一个 talk：talkId + 归一化的对话节点
     quests.jsonl   每行一个主任务：mainQuestId + 子任务 + 引用的 talkId
+    voices.json    Dialog / DungeonReminder 的有配音 id 集合（Items ∪ Lut）
     reminders.jsonl 每行一条语音字幕链（ReminderExcelConfigData，按 nextReminderId 串）
+    pronouns.jsonl 每行一个按性别取的键 + TextMapHash（ManualTextMapConfigData 里 INFO_MALE_* / INFO_FEMALE_* 那些）
+    readables.jsonl 每行一条阅读面板长文本的出处：Readable/ 各语种的文件名，或配置表行的 TextMapHash
     unparsed.jsonl 所有推断/归一化失败的记录（这个在 build/ 下）
 
 本模块懂业务（知道什么是任务、什么是对话），但**不碰混淆字段名** —— 字段角色
@@ -14,9 +17,10 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from collections import Counter, defaultdict
 
-from . import infer
+from . import infer, readable, textmap, voice
 from .textmap import TextMap
 
 
@@ -81,11 +85,16 @@ def _stem(name):
     return name[:-5] if name.endswith(".json") else name
 
 
+def _is_int(v):
+    return isinstance(v, int) and not isinstance(v, bool)
+
+
 class Indexer:
     def __init__(self, upstream: str, build: str, lang: str = "CHS"):
         self.upstream = upstream
         self.build = build
         self.out_dir = os.path.join(build, "index")
+        self.lang = lang
         os.makedirs(self.out_dir, exist_ok=True)
         self.textmap = TextMap.load(upstream, lang)
         self.failures = []
@@ -491,6 +500,22 @@ class Indexer:
     # hash 查不到文本——7.0.0 实测命中 83%。正文字段仍按 infer 的默认门槛 0.9。
     REMINDER_SPEAKER_MIN_HIT = 0.5
 
+    def index_voices(self):
+        """在已归一化的 Talk 与明文 Reminder id 集合上推断语音映射参数。"""
+        dialog_ids = set()
+        with open(os.path.join(self.out_dir, "talks.jsonl"), encoding="utf-8") as f:
+            for line in f:
+                dialog_ids.update(d["dialog_id"] for d in json.loads(line)["dialog"])
+        reminders = _load(os.path.join(
+            self.upstream, "ExcelBinOutput", "ReminderExcelConfigData.json"))
+        self.voice_ids, stats, failures = voice.load(self.upstream, {
+            "Dialog": dialog_ids, "DungeonReminder": {r["id"] for r in reminders}})
+        for key, value in stats.items():
+            self.stats[key] = value
+        self.failures.extend(failures)
+        with open(os.path.join(self.out_dir, "voices.json"), "w", encoding="utf-8") as f:
+            json.dump({t: sorted(ids) for t, ids in self.voice_ids.items()}, f)
+
     # 表省略默认值时补回的值（见 `index_reminders`）。`style` 的缺省是 `Normal`：7.1.0 里
     # 显式的 `Normal` 一行都没有，缺 `style` 的行在 7.0.0 里正是 `Normal`。
     REMINDER_DEFAULTS = {"hasAudio": False, "style": "Normal", "showTime": 0, "delay": 0}
@@ -547,12 +572,15 @@ class Indexer:
             return int(v) if isinstance(v, float) and v.is_integer() else v
 
         def voice(r):
-            # 配音标记（docs/genshin/manual.md 的「语音字幕」）：只有明文的 `hasAudio` 可依；缺字段除上面那种情形外不猜。
+            # Voice 的 DungeonReminder 映射是正证据；没命中再依 hasAudio（含默认值补全）。
             # 判不了 generic（泛用语音）：带 `soundEffect` 的只有 10 条，而且互不重复
             v = field(r, "hasAudio")
-            return "voiced" if v is True else "unvoiced" if v is False else "unknown"
+            return "voiced" if r["id"] in self.voice_ids["DungeonReminder"] or v is True else \
+                "unvoiced" if v is False else "unknown"
         for r in by_id.values():
             self.stats["reminder_voice_" + voice(r)] += 1
+            if r["id"] in self.voice_ids["DungeonReminder"] and field(r, "hasAudio") is not True:
+                self.stats["reminder_voice_mapping_overrides"] += 1
 
         def nxt(r):
             # `next` 指向自己（7.0.0 有 4 条）当链尾，不当环
@@ -608,6 +636,150 @@ class Indexer:
                 if start not in reached:
                     write(start, cyclic=True)
                     self.stats["reminder_cycles"] += 1
+
+    # ----------------------------------------------------------- 称谓
+
+    PRONOUN_KEY = re.compile(r"^INFO_(?:MALE|FEMALE)_\w+$")
+    """台词里 `{PLAYERAVATAR#SEXPRO[甲|乙]}` / `{MATEAVATAR#SEXPRO[…]}` 引用的键（第一个键是那个角色为男时用的、第二个为女时，
+    和键名无关）：称谓 `INFO_*_PRONOUN_*`，以及日文句尾 `INFO_*_PLAYER_END0x`。键是上游的明文值（不是字段名），按它认行。"""
+    PRONOUN_MIN_ROWS = 10
+
+    def index_pronouns(self):
+        """`ManualTextMapConfigData`：键名 -> TextMapHash 的对照表，只取按性别取的那些键（7.1.0：称谓 62 个 + 句尾 16 个）。
+
+        两个字段都不认字段名（不变量 1）：**键字段**是取值匹配 `PRONOUN_KEY` 的那个顶层字符串字段，
+        **文本字段**是在这些行上 TextMap 命中率最高的顶层整数字段（`infer.infer_text_paths`）。
+        否决：认不出键字段、或文本字段命中率不到 0.9，整张表判失败、写空表，不产出键和文本错配的对照。"""
+        path = os.path.join(self.upstream, "ExcelBinOutput", "ManualTextMapConfigData.json")
+        out = os.path.join(self.out_dir, "pronouns.jsonl")
+        rows = _load(path)
+        self.stats["manual_textmap_rows"] = len(rows)
+        keys = Counter(k for r in rows for k, v in r.items()
+                       if isinstance(v, str) and self.PRONOUN_KEY.match(v))
+        key = max(keys, key=keys.get, default=None)
+        mine = [r for r in rows if key and isinstance(r.get(key), str) and self.PRONOUN_KEY.match(r[key])]
+        fields = infer.infer_text_paths(mine, self.textmap.get, min_hit=0.0, min_count=1) if mine else []
+        fields = [f for f in fields if "[]" not in f["path"] and "." not in f["path"]]
+        text = max(fields, key=lambda f: f["hit_rate"], default=None)
+        if len(mine) < self.PRONOUN_MIN_ROWS or not text or text["hit_rate"] < 0.9:
+            self.failures.append(infer.Failure(
+                "ExcelBinOutput/ManualTextMapConfigData.json", "pronoun_layout",
+                "推不出称谓键 / 文本两个字段", {"key_candidates": dict(keys), "text_candidates": fields[:6],
+                                            "rows": len(mine)}))
+            self.stats["pronoun_failed"] = 1
+            open(out, "w").close()      # 写空表：不写的话 emit 会读到上一次跑剩下的
+            return
+        self.stats["pronoun_fields"] = {"text": infer.summarize_paths([text])}
+        by_key = {}
+        for r in mine:
+            by_key.setdefault(r[key], r.get(text["path"]))
+        self.stats["pronoun_keys"] = len(by_key)
+        self.stats["pronoun_duplicate_keys"] = len(mine) - len(by_key)
+        with open(out, "w", encoding="utf-8") as f:
+            for k in sorted(by_key):
+                f.write(json.dumps({"id": k, "hash": by_key[k]}, ensure_ascii=False) + "\n")
+
+    # ----------------------------------------------------------- 阅读面板长文本
+
+    def index_readables(self):
+        """阅读面板的长文本（来源与对齐方式见 `readable` 模块）。写 `readables.jsonl`，每行一条：
+        `Readable/` 的是 `{source, id, files: {语种: 文件名}}`（id 是 `LocalizationExcelConfigData` 的行 id），
+        配置表的是 `{source, id, hash}`（id 是那张表这一行的 id，字段名见 `readable.TABLES`）。文本在 emit 里解引用。
+
+        失败都计非预期（不变量 2）：快照里缺了某个要产出的语种的 `Readable/<语种>/` 目录（sparse 规则是后加的，
+        老快照要带取数跑一次 snapshot 才有；漏的是非基准语种时，那个语种整列会是 null，看着像上游缺文本）、本地化表里一行指向 `Readable/` 的都没有、同一行同一语种给了两个不同的文件、
+        配置表缺失或推不出正文字段、id 不是整数或重复。"""
+        items = self._readable_files()
+        self.stats["readable_tables"] = {}
+        for table, id_key in readable.TABLES:
+            items += self._readable_table(table, id_key)
+        with open(os.path.join(self.out_dir, "readables.jsonl"), "w", encoding="utf-8") as f:
+            for it in items:
+                f.write(json.dumps(it, ensure_ascii=False) + "\n")
+        self.stats["readable_items"] = len(items)
+
+    def _readable_fail(self, source, reason, **detail):
+        self.failures.append(infer.Failure(source, "readable_layout", reason, detail))
+
+    def _readable_files(self):
+        """`LocalizationExcelConfigData` 里值指向 `Readable/` 的行 → 各语种的文件名。"""
+        source = "ExcelBinOutput/LocalizationExcelConfigData.json"
+        root = os.path.join(self.upstream, readable.DIR)
+        # 每个要产出的语种都要有目录：缺目录是取数缺口，不是上游缺文本，和个别文件不存在分开计
+        missing = [lang for lang in textmap.LANGS if not os.path.isdir(os.path.join(root, lang))]
+        self.stats["readable_dirs_missing"] = missing
+        for lang in missing:
+            self._readable_fail(readable.SOURCE_DIR, "快照里没有 %s/%s/：sparse 规则里的 Readable/ 是后加的，"
+                                "带取数跑一次 snapshot" % (readable.DIR, lang))
+        if self.lang in missing:
+            return []
+        rows = _load(os.path.join(self.upstream, source))
+        items, conflicts = [], 0
+        for r in rows:
+            files = {}
+            for v in r.values():
+                hit = readable.parse_path(v)
+                if hit and files.setdefault(*hit) != hit[1]:
+                    conflicts += 1
+            if not files:
+                continue
+            if not _is_int(r.get("id")):
+                self._readable_fail(source, "指向 Readable/ 的行没有整数 id", row=r)
+                continue
+            items.append({"source": readable.SOURCE_DIR, "id": r["id"], "files": dict(sorted(files.items()))})
+        if conflicts:
+            self._readable_fail(source, "同一行同一语种给了两个不同的 Readable/ 文件", rows=conflicts)
+        if not items:
+            self._readable_fail(source, "一行指向 Readable/ 的都没有")
+        items.sort(key=lambda it: it["id"])
+        if len({it["id"] for it in items}) != len(items):
+            self._readable_fail(source, "指向 Readable/ 的行 id 重复")
+        self.stats["readable_localization_rows"] = len(rows)
+        self.stats["readable_file_rows"] = len(items)
+        # 各语种目录里没有本地化记录指向的文件：有正文却没有 id、也对不齐别的语种，不收，只计数
+        on_disk, unreferenced = {}, {}
+        for lang in sorted(os.listdir(root)):
+            if not os.path.isdir(os.path.join(root, lang)):
+                continue
+            names = sorted(n[:-4] for n in os.listdir(os.path.join(root, lang)) if n.endswith(".txt"))
+            named = {it["files"][lang] for it in items if lang in it["files"]}
+            on_disk[lang] = len(names)
+            unreferenced[lang] = [n for n in names if n not in named]
+        self.stats["readable_files_on_disk"] = on_disk
+        self.stats["readable_files_unreferenced"] = {k: len(v) for k, v in unreferenced.items()}
+        self.stats["readable_files_unreferenced_sample"] = unreferenced.get(self.lang, [])[:10]
+        return items
+
+    def _readable_table(self, table, id_key):
+        """一张阅读界面配置表 → 每行的正文 hash。正文字段按结构认：TextMap 命中率不低于
+        `TEXT_MIN_HIT` 的顶层整数字段里，文本长度中位数最长的那个（标题、署名都短）。"""
+        source = "ExcelBinOutput/%s.json" % table
+        path = os.path.join(self.upstream, source)
+        if not os.path.exists(path):
+            self._readable_fail(source, "阅读界面的配置表不在快照里")
+            return []
+        rows = _load(path)
+        fields = infer.infer_text_paths(rows, self.textmap.get, min_hit=readable.TEXT_MIN_HIT, min_count=1)
+        fields = [f for f in fields if "[]" not in f["path"] and "." not in f["path"] and f["path"] != id_key]
+        text = max(fields, key=lambda f: f["median_len"], default=None)
+        if not text or text["median_len"] < readable.TEXT_MIN_MEDIAN:
+            self._readable_fail(source, "推不出正文字段", candidates=fields[:6])
+            return []
+        items, no_hash = [], 0
+        for r in rows:
+            if not _is_int(r.get(id_key)):
+                self._readable_fail(source, "行没有整数 id（%s）" % id_key, row=r)
+            elif not r.get(text["path"]):
+                no_hash += 1      # 这一行没有正文（字段省略或为 0）
+            else:
+                items.append({"source": table, "id": r[id_key], "hash": r[text["path"]]})
+        items.sort(key=lambda it: it["id"])
+        if len({it["id"] for it in items}) != len(items):
+            self._readable_fail(source, "行 id 重复")
+        self.stats["readable_tables"][table] = {
+            "rows": len(rows), "with_text": len(items), "no_hash": no_hash,
+            "field": infer.summarize_paths([text])[0]}
+        return items
 
     # ----------------------------------------------------------- 汇总
 

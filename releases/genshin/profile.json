@@ -1,10 +1,38 @@
 {
  "contracts": {
+  "pronouns": "genshin.pronouns/1",
   "quests": "genshin.quests/1",
+  "readables": "genshin.readables/1",
   "reminders": "genshin.reminders/1",
   "terms": "genshin.terms/1"
  },
  "tables": {
+  "pronouns": {
+   "CHS": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 78
+   },
+   "EN": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 78
+   },
+   "JP": {
+    "enum_share": {},
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 78
+   }
+  },
   "quests": {
    "CHS": {
     "enum_share": {
@@ -24,7 +52,8 @@
       "TALK_ROLE_PLAYER": 0.147978
      },
      "dialog[].voice": {
-      "unknown": 1.0
+      "unknown": 0.540221,
+      "voiced": 0.459779
      },
      "steps[].fail_cond": {
       "QUEST_HIDDEN": 0.196453
@@ -83,7 +112,8 @@
       "TALK_ROLE_PLAYER": 0.147978
      },
      "dialog[].voice": {
-      "unknown": 1.0
+      "unknown": 0.540221,
+      "voiced": 0.459779
      },
      "steps[].fail_cond": {
       "QUEST_HIDDEN": 0.196453
@@ -142,7 +172,8 @@
       "TALK_ROLE_PLAYER": 0.147978
      },
      "dialog[].voice": {
-      "unknown": 1.0
+      "unknown": 0.540221,
+      "voiced": 0.459779
      },
      "steps[].fail_cond": {
       "QUEST_HIDDEN": 0.196453
@@ -182,6 +213,56 @@
      "upstream.version": 0.0
     },
     "rows": 4417
+   }
+  },
+  "readables": {
+   "CHS": {
+    "enum_share": {
+     "source": {
+      "AlchemySimLetterExcelConfigData": 0.000904,
+      "FetterStoryExcelConfigData": 0.146624,
+      "MailExcelConfigData": 0.048674,
+      "Readable/": 0.283002,
+      "TutorialDetailExcelConfigData": 0.520796
+     }
+    },
+    "items": {},
+    "null_rate": {
+     "text": 0.0
+    },
+    "rows": 6636
+   },
+   "EN": {
+    "enum_share": {
+     "source": {
+      "AlchemySimLetterExcelConfigData": 0.000904,
+      "FetterStoryExcelConfigData": 0.146624,
+      "MailExcelConfigData": 0.048674,
+      "Readable/": 0.283002,
+      "TutorialDetailExcelConfigData": 0.520796
+     }
+    },
+    "items": {},
+    "null_rate": {
+     "text": 0.010096
+    },
+    "rows": 6636
+   },
+   "JP": {
+    "enum_share": {
+     "source": {
+      "AlchemySimLetterExcelConfigData": 0.000904,
+      "FetterStoryExcelConfigData": 0.146624,
+      "MailExcelConfigData": 0.048674,
+      "Readable/": 0.283002,
+      "TutorialDetailExcelConfigData": 0.520796
+     }
+    },
+    "items": {},
+    "null_rate": {
+     "text": 0.010096
+    },
+    "rows": 6636
    }
   },
   "reminders": {
@@ -243,8 +324,8 @@
       "WxycReminder": 0.001612
      },
      "lines[].voice": {
-      "unvoiced": 0.759566,
-      "voiced": 0.240434
+      "unvoiced": 0.746776,
+      "voiced": 0.253224
      }
     },
     "items": {
@@ -315,8 +396,8 @@
       "WxycReminder": 0.001612
      },
      "lines[].voice": {
-      "unvoiced": 0.759566,
-      "voiced": 0.240434
+      "unvoiced": 0.746776,
+      "voiced": 0.253224
      }
     },
     "items": {
@@ -387,8 +468,8 @@
       "WxycReminder": 0.001612
      },
      "lines[].voice": {
-      "unvoiced": 0.759566,
-      "voiced": 0.240434
+      "unvoiced": 0.746776,
+      "voiced": 0.253224
      }
     },
     "items": {

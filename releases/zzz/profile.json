@@ -11,257 +11,257 @@
    "CHS": {
     "enum_share": {
      "reason": {
-      "non_story": 0.198177,
-      "unmatched": 0.801166,
-      "unused": 0.000657
+      "non_story": 0.196567,
+      "unmatched": 0.802773,
+      "unused": 0.00066
      }
     },
     "items": {},
     "null_rate": {
-     "group": 0.923395,
-     "seq": 0.923395,
+     "group": 0.925487,
+     "seq": 0.925487,
      "text": 0.0,
      "upstream.version": 0.0
     },
-    "rows": 138477
+    "rows": 142364
    },
    "EN": {
     "enum_share": {
      "reason": {
-      "non_story": 0.198177,
-      "unmatched": 0.801166,
-      "unused": 0.000657
+      "non_story": 0.196567,
+      "unmatched": 0.802773,
+      "unused": 0.00066
      }
     },
     "items": {},
     "null_rate": {
-     "group": 0.923395,
-     "seq": 0.923395,
-     "text": 0.042679,
+     "group": 0.925487,
+     "seq": 0.925487,
+     "text": 0.033421,
      "upstream.version": 0.0
     },
-    "rows": 138477
+    "rows": 142364
    },
    "JA": {
     "enum_share": {
      "reason": {
-      "non_story": 0.198177,
-      "unmatched": 0.801166,
-      "unused": 0.000657
+      "non_story": 0.196567,
+      "unmatched": 0.802773,
+      "unused": 0.00066
      }
     },
     "items": {},
     "null_rate": {
-     "group": 0.923395,
-     "seq": 0.923395,
-     "text": 0.040852,
+     "group": 0.925487,
+     "seq": 0.925487,
+     "text": 0.031328,
      "upstream.version": 0.0
     },
-    "rows": 138477
+    "rows": 142364
    }
   },
   "messages": {
    "CHS": {
     "enum_share": {},
     "items": {
-     "nodes": 4568,
-     "nodes[].messages": 9144,
-     "nodes[].options": 4661,
-     "quests": 365
+     "nodes": 4640,
+     "nodes[].messages": 9290,
+     "nodes[].options": 4759,
+     "quests": 373
     },
     "null_rate": {
-     "nodes[].messages[].speaker": 0.044948,
-     "nodes[].messages[].text": 0.007108,
-     "nodes[].options[].goto_step": 0.022527,
-     "nodes[].options[].text": 0.012658,
+     "nodes[].messages[].speaker": 0.044241,
+     "nodes[].messages[].text": 0.006997,
+     "nodes[].options[].goto_step": 0.023324,
+     "nodes[].options[].text": 0.012398,
      "upstream.version": 0.0
     },
-    "rows": 961
+    "rows": 975
    },
    "EN": {
     "enum_share": {},
     "items": {
-     "nodes": 4568,
-     "nodes[].messages": 9144,
-     "nodes[].options": 4661,
-     "quests": 365
+     "nodes": 4640,
+     "nodes[].messages": 9290,
+     "nodes[].options": 4759,
+     "quests": 373
     },
     "null_rate": {
-     "nodes[].messages[].speaker": 0.044948,
-     "nodes[].messages[].text": 0.007327,
-     "nodes[].options[].goto_step": 0.022527,
-     "nodes[].options[].text": 0.012658,
+     "nodes[].messages[].speaker": 0.044241,
+     "nodes[].messages[].text": 0.006997,
+     "nodes[].options[].goto_step": 0.023324,
+     "nodes[].options[].text": 0.012398,
      "upstream.version": 0.0
     },
-    "rows": 961
+    "rows": 975
    },
    "JA": {
     "enum_share": {},
     "items": {
-     "nodes": 4568,
-     "nodes[].messages": 9144,
-     "nodes[].options": 4661,
-     "quests": 365
+     "nodes": 4640,
+     "nodes[].messages": 9290,
+     "nodes[].options": 4759,
+     "quests": 373
     },
     "null_rate": {
-     "nodes[].messages[].speaker": 0.044948,
-     "nodes[].messages[].text": 0.007327,
-     "nodes[].options[].goto_step": 0.022527,
-     "nodes[].options[].text": 0.012658,
+     "nodes[].messages[].speaker": 0.044241,
+     "nodes[].messages[].text": 0.006997,
+     "nodes[].options[].goto_step": 0.023324,
+     "nodes[].options[].text": 0.012398,
      "upstream.version": 0.0
     },
-    "rows": 961
+    "rows": 975
    }
   },
   "quests": {
    "CHS": {
     "enum_share": {},
     "items": {
-     "next_quests": 5449,
-     "prev_quests": 5406
+     "next_quests": 5606,
+     "prev_quests": 5563
     },
     "null_rate": {
-     "description": 0.289621,
-     "display_name": 0.975005,
+     "description": 0.288428,
+     "display_name": 0.975057,
      "finish": 1.0,
-     "name": 0.516652,
-     "target": 0.335941,
+     "name": 0.521766,
+     "target": 0.333987,
      "upstream.version": 0.0
     },
-    "rows": 14443
+    "rows": 14794
    },
    "EN": {
     "enum_share": {},
     "items": {
-     "next_quests": 5449,
-     "prev_quests": 5406
+     "next_quests": 5606,
+     "prev_quests": 5563
     },
     "null_rate": {
-     "description": 0.346258,
-     "display_name": 0.975213,
+     "description": 0.33446,
+     "display_name": 0.975057,
      "finish": 1.0,
-     "name": 0.548432,
-     "target": 0.389462,
+     "name": 0.543869,
+     "target": 0.362782,
      "upstream.version": 0.0
     },
-    "rows": 14443
+    "rows": 14794
    },
    "JA": {
     "enum_share": {},
     "items": {
-     "next_quests": 5449,
-     "prev_quests": 5406
+     "next_quests": 5606,
+     "prev_quests": 5563
     },
     "null_rate": {
-     "description": 0.325971,
-     "display_name": 0.975213,
+     "description": 0.314655,
+     "display_name": 0.975057,
      "finish": 1.0,
-     "name": 0.530915,
-     "target": 0.36966,
+     "name": 0.526768,
+     "target": 0.34345,
      "upstream.version": 0.0
     },
-    "rows": 14443
+    "rows": 14794
    }
   },
   "scenes": {
    "CHS": {
     "enum_share": {
      "kind": {
-      "13": 0.000511,
-      "Bubble": 0.140977,
-      "BubbleNpc": 0.005228,
-      "BubbleStory": 0.112103,
-      "Chat": 0.31801,
-      "ChatAudio": 0.002013,
-      "ChatPlus": 0.000361,
-      "GalGame": 0.040743
+      "13": 0.000499,
+      "Bubble": 0.137636,
+      "BubbleNpc": 0.005104,
+      "BubbleStory": 0.115283,
+      "Chat": 0.317043,
+      "ChatAudio": 0.003344,
+      "ChatPlus": 0.000352,
+      "GalGame": 0.04186
      },
      "quests[].via": {
-      "ActivityBattleQuestTemplateTb.json": 0.087248,
-      "ArchiveFileQuestTemplateTb.json": 0.912752
+      "ActivityBattleQuestTemplateTb.json": 0.081081,
+      "ArchiveFileQuestTemplateTb.json": 0.918919
      }
     },
     "items": {
-     "cast": 16234,
-     "lines": 241270,
-     "quests": 447
+     "cast": 17140,
+     "lines": 248482,
+     "quests": 481
     },
     "null_rate": {
      "cast[]": 0.0,
-     "group": 0.380055,
-     "intro": 0.962713,
-     "kind": 0.380055,
+     "group": 0.378879,
+     "intro": 0.961748,
+     "kind": 0.378879,
      "lines[].text": 0.0,
-     "title": 0.962713,
+     "title": 0.961748,
      "upstream.version": 0.0
     },
-    "rows": 33282
+    "rows": 34090
    },
    "EN": {
     "enum_share": {
      "kind": {
-      "13": 0.000511,
-      "Bubble": 0.140977,
-      "BubbleNpc": 0.005228,
-      "BubbleStory": 0.112103,
-      "Chat": 0.31801,
-      "ChatAudio": 0.002013,
-      "ChatPlus": 0.000361,
-      "GalGame": 0.040743
+      "13": 0.000499,
+      "Bubble": 0.137636,
+      "BubbleNpc": 0.005104,
+      "BubbleStory": 0.115283,
+      "Chat": 0.317043,
+      "ChatAudio": 0.003344,
+      "ChatPlus": 0.000352,
+      "GalGame": 0.04186
      },
      "quests[].via": {
-      "ActivityBattleQuestTemplateTb.json": 0.087248,
-      "ArchiveFileQuestTemplateTb.json": 0.912752
+      "ActivityBattleQuestTemplateTb.json": 0.081081,
+      "ArchiveFileQuestTemplateTb.json": 0.918919
      }
     },
     "items": {
-     "cast": 16234,
-     "lines": 241270,
-     "quests": 447
+     "cast": 17140,
+     "lines": 248482,
+     "quests": 481
     },
     "null_rate": {
-     "cast[]": 0.00616,
-     "group": 0.380055,
-     "intro": 0.962743,
-     "kind": 0.380055,
-     "lines[].text": 0.001907,
-     "title": 0.962743,
+     "cast[]": 0.0,
+     "group": 0.378879,
+     "intro": 0.961748,
+     "kind": 0.378879,
+     "lines[].text": 9.7e-05,
+     "title": 0.961748,
      "upstream.version": 0.0
     },
-    "rows": 33282
+    "rows": 34090
    },
    "JA": {
     "enum_share": {
      "kind": {
-      "13": 0.000511,
-      "Bubble": 0.140977,
-      "BubbleNpc": 0.005228,
-      "BubbleStory": 0.112103,
-      "Chat": 0.31801,
-      "ChatAudio": 0.002013,
-      "ChatPlus": 0.000361,
-      "GalGame": 0.040743
+      "13": 0.000499,
+      "Bubble": 0.137636,
+      "BubbleNpc": 0.005104,
+      "BubbleStory": 0.115283,
+      "Chat": 0.317043,
+      "ChatAudio": 0.003344,
+      "ChatPlus": 0.000352,
+      "GalGame": 0.04186
      },
      "quests[].via": {
-      "ActivityBattleQuestTemplateTb.json": 0.087248,
-      "ArchiveFileQuestTemplateTb.json": 0.912752
+      "ActivityBattleQuestTemplateTb.json": 0.081081,
+      "ArchiveFileQuestTemplateTb.json": 0.918919
      }
     },
     "items": {
-     "cast": 16234,
-     "lines": 241270,
-     "quests": 447
+     "cast": 17140,
+     "lines": 248482,
+     "quests": 481
     },
     "null_rate": {
-     "cast[]": 0.00616,
-     "group": 0.380055,
-     "intro": 0.962743,
-     "kind": 0.380055,
-     "lines[].text": 0.002176,
-     "title": 0.962743,
+     "cast[]": 0.0,
+     "group": 0.378879,
+     "intro": 0.961748,
+     "kind": 0.378879,
+     "lines[].text": 6e-05,
+     "title": 0.961748,
      "upstream.version": 0.0
     },
-    "rows": 33282
+    "rows": 34090
    }
   },
   "terms": {
@@ -271,28 +271,28 @@
     "null_rate": {
      "text": 0.0
     },
-    "rows": 125760
+    "rows": 129461
    },
    "EN": {
     "enum_share": {},
     "items": {},
     "null_rate": {
-     "text": 0.02667
+     "text": 0.017828
     },
-    "rows": 125760
+    "rows": 129461
    },
    "JA": {
     "enum_share": {},
     "items": {},
     "null_rate": {
-     "text": 0.026582
+     "text": 0.017735
     },
-    "rows": 125760
+    "rows": 129461
    }
   }
  },
  "upstream": {
-  "commit": "1277ebca4b8a7a6c3bcbaac6d5708dc9f4a55f23",
-  "version": "3.2.0"
+  "commit": "350db423359eb02d8d82a94c7a14f6351f90a823",
+  "version": "3.3.0"
  }
 }

@@ -17,6 +17,7 @@
 | 台词覆盖 | **66.3%**（162 072 / 244 379）被脚本引用；**全部 244 379 句**另见全量台词表 |
 | 台词未解析率 | **0.01%**（各语种一致） |
 | 短名词 | **118 528** 条（TextMap 里 CHS ≤16 字的名词形短串，见[短名词](manual.md#短名词-terms_)） |
+| 玩家起名的占位 | **191** 个 `{TEXTJOIN#n}` 的候选与默认项（`TextJoinConfig` / `TextJoinItem`，见[玩家起名的占位](manual.md#玩家起名的占位-textjoins_)） |
 
 ## 快速开始
 
@@ -35,7 +36,7 @@ uv run python tools/starrail/p0_probe.py           # 上游结构诊断
 
 | 文档 | 内容 |
 | --- | --- |
-| [manual.md](manual.md) | 产出的语料：事件流与分支、全量台词表、任务外对话、短信、配音标记、短名词、语种与压缩 |
+| [manual.md](manual.md) | 产出的语料：事件流与分支、全量台词表、任务外对话、短信、配音标记、短名词、玩家起名的占位、语种与压缩 |
 | [architecture.md](architecture.md) | 为什么这样解析：上游的坑、流水线、覆盖率的边界、交叉校验、不做的事 |
 | [dev-guide.md](dev-guide.md) | 改代码后怎么验、版本更新、跨版本回归、磁盘 |
 | [data-source.md](data-source.md) | 上游实测结构、与原神的差异、对话链路、待核实清单 |

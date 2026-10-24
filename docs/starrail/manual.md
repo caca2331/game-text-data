@@ -13,6 +13,7 @@ corpus/starrail/
 ├── messages_{chs,en,jp}.jsonl.zst    短信
 ├── sentences_{chs,en,jp}.jsonl.zst   全量台词表：每句一行，带 sources
 ├── terms_{chs,en,jp}.jsonl.zst       短名词
+├── textjoins_{chs,en,jp}.jsonl.zst   玩家起名的占位 {TEXTJOIN#n} 的候选
 ├── report.json                          完整性报告
 └── manifest.json                        清单（产物包协议）
 ```
@@ -84,7 +85,7 @@ interact_title=NPCName_Normal_Adele
 两条线索基本不重叠：带 FloorID 的是场景/城区脚本，带 ActPath 的是 NPC/物件交互。
 查不到就留空，不猜。
 
-`{TEXTJOIN#n}`（玩家选的飞船名之类的动态占位符）**只在标签里解**：实测有 449 个区域名就是 `{TEXTJOIN#87}`，用 `TextJoinConfig` 的 `DefaultItem` 替换（87 → 晖长石号）。**对话正文一律保持原样**：占位符本身是信息（玩家的选择），要不要替换是下游的事。
+`{TEXTJOIN#n}`（玩家选的飞船名之类的动态占位符）**只在标签里解**：实测有 449 个区域名就是 `{TEXTJOIN#87}`，用 `TextJoinConfig` 的 `DefaultItem` 替换（87 → 晖长石号）。**对话正文一律保持原样**：占位符本身是信息（玩家的选择），要不要替换是下游的事；候选整张在 [`textjoins_*`](#玩家起名的占位-textjoins_)。
 
 ## 短信 `messages_*`
 
@@ -137,6 +138,18 @@ TextMap 里"像名词"的短串逐条照搬，一个 TextMapHash 一行（`{"id"
 - **出处**就是 `id`（TextMapHash），配上清单里的上游 commit 可以回查；行上不重复带 `upstream`。
 - **不去重、不消歧**：同一个日文串可能对应几个 hash、几种中文，怎么取是下游的事。
 - 本语种查不到写 `null`，计进报告的 `terms_missing`（4.5.0：EN 1 / JP 0）。
+
+## 玩家起名的占位 `textjoins_*`
+
+台词里的 `{TEXTJOIN#n}` 是玩家起的名字：宠物、飞船、社团、帖子标题…，游戏给几个候选让玩家选，有的还留一格「自定义名称」。
+这张表一个 n 一行：`{"id": 54, "default": 0, "items": ["次元扑满", "扑满", "泡泡", "毛球", "白色恶魔"]}`（日文那份是日文的候选），
+`default` 是默认项在 `items` 里的下标，`items` 按上游 `TextJoinItemList` 的顺序（默认项不在列表里时插到最前）。
+
+- **出处**：`ExcelOutput/TextJoinConfig.json`（n → 候选 id 列表 + 默认项）与 `TextJoinItem.json`（候选 id → 文本 hash）。和标签里换默认值用的是同一次读。
+- 候选文本原样保留富文本标记（`龙尊MK<unbreak>2000</unbreak>型`）；「自定义名称N」这类是玩家自己起名的那一格的占位文本。
+- 本语种查不到写 `null`。4.6.0：676 个候选里 48 个上游本身没有文本 hash（多是任务描述里"还没做选择时什么都不显示"的默认空项，`textjoin_item_no_hash`），
+  其余 628 个里 84 个有 hash 但各语种都查不到（`textjoin_item_absent_upstream`，全在 n = 280–285 这 6 个、台词里没有引用）。
+- 为什么补它：下游 flowocr 按视频认玩家选的是哪个候选，把台词里的占位换成对应语种的名字；认不出就用默认项。
 
 ## 语种与压缩
 

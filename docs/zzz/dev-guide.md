@@ -79,7 +79,7 @@ Windows 文件系统大小写不敏感，每组只能落一个，落哪个取决
 好消息是这 21 组都不在我们具名解析的表里（Perform / Quest / Message），只被"扫全表找桥"
 那一趟读到过。原神与崩铁的上游各有 0 组冲突。
 
-当前快照 `1277ebca4b` 只剩 **1 组**（`Data/_unsorted/Zhenzhen_CardS3_Base_01_ZenKov.json` 与 `…_Zenkov.json`），
+当前快照 `350db42335` 只剩 **1 组**（`Data/_unsorted/Zhenzhen_CardS3_Base_01_ZenKov.json` 与 `…_Zenkov.json`），
 两边是同一个 blob、也不在 sparse 检出范围里，不影响解析。同名冲突的检测只看 sparse 实际检出的文件，
 所以它不再上报，清单里 `integrity_checked` 是 `true`（2026-10 之前扫整棵树，这一组让它一直是 `false`）。
 

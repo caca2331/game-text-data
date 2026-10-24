@@ -123,4 +123,14 @@ CONTRACTS = Contracts("starrail", {
         "各语种行数相同、逐行 id 相同",
         "id 全表唯一",
     ]),
+    "textjoins": Table(1, [
+        F("id", "int", None, None, "TextJoinID：台词里 `{TEXTJOIN#n}` 的 n"),
+        F("default", "int", "默认项不在候选里（上游没给或指向不存在的项）", None, "默认项在 items 里的下标"),
+        F("items", "list", None, None, "候选（玩家可选的名字），按上游 TextJoinItemList 的顺序"),
+        F("items[]", "str", "本语种查不到", None,
+          "候选文本，原样保留富文本标记（`<unbreak>`）；「自定义名称N」这类是玩家自己起名的那一格"),
+    ], [
+        "各语种行数相同、逐行 id 相同",
+        "id 全表唯一，按 id 排序；各语种同一行的 items 一样长",
+    ]),
 })

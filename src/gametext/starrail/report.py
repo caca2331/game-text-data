@@ -176,6 +176,11 @@ def summarize(report) -> str:
                  "（generic = 挂的全是被不同台词共用的泛用语音，%d 段；短信一律 unknown）"
                  % (*(idx.get("sentence_voice_" + k, 0) for k in ("voiced", "generic", "unvoiced", "unknown")),
                     idx.get("generic_voice_clips", 0)))
+    p0 = report["per_lang"][textmap.LANGS[0]]
+    lines.append("  玩家起名的占位（textjoins，{TEXTJOIN#n}）: %d 个；候选查不到 %s"
+                 % (p0.get("textjoins_rows", 0),
+                    "、".join("%s %d" % (lang, report["per_lang"][lang].get("textjoin_item_unresolved", 0))
+                             for lang in textmap.LANGS)))
     lines.append("  短名词（terms，CHS ≤%d 字）: %d 条；各语种缺译 %s"
                  % (TERM_MAX_CHARS, report["per_lang"][textmap.LANGS[0]].get("terms_rows", 0),
                     "、".join("%s %d" % (lang, report["per_lang"][lang].get("terms_missing", 0))

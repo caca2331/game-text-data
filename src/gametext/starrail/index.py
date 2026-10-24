@@ -330,28 +330,44 @@ class Indexer:
         return floor_to_plane, by_actpath
 
     def index_textjoin(self):
-        """`{TEXTJOIN#n}` -> 默认取值的文本 hash。
+        """`{TEXTJOIN#n}` -> 默认取值的文本 hash（`textjoin.json`，emit 换标签用），以及每个 n 的全部候选（`textjoins.jsonl`，出 `textjoins_*` 表）。
 
-        崩铁的文本里有这种动态占位符（玩家选的飞船名之类）。**对话正文保持原样**
+        崩铁的文本里有这种动态占位符（玩家给宠物 / 飞船 / 社团起的名字，从几个候选里选、有的还能自定义）。**对话正文保持原样**
         （占位符本身是信息，下游要不要替换是下游的事），但地点这类**标签**里留着
-        占位符就没法用了——实测有 449 个区域名是 `{TEXTJOIN#87}`。
+        占位符就没法用了——实测有 449 个区域名是 `{TEXTJOIN#87}`。下游要按视频认出玩家选的是哪个，所以候选整张给出。
         """
         cfg_path, item_path = (os.path.join(self.upstream, "ExcelOutput", n)
                                for n in TEXTJOIN_TABLES)
         if not (os.path.exists(cfg_path) and os.path.exists(item_path)):
             self.fail("TextJoin*", "textjoin", "表不存在，占位符无法解析")
+            open(os.path.join(self.out_dir, "textjoins.jsonl"), "w").close()   # 写空表：别让 emit 读到上一次剩下的
             return
         items = {r["TextJoinItemID"]: _hash(r, "TextJoinText")
                  for r in _load(item_path) if "TextJoinItemID" in r}
         out = {}
+        rows = []
         for row in _load(cfg_path):
             default = items.get(row.get("DefaultItem"))
             if default is not None:
                 out[str(row["TextJoinID"])] = default
+            ids = list(row.get("TextJoinItemList") or [])
+            if row.get("DefaultItem") is not None and row["DefaultItem"] not in ids:
+                ids.insert(0, row["DefaultItem"])
+                self.stats["textjoin_default_not_in_list"] += 1
+            dangling = [i for i in ids if i not in items]
+            self.stats["textjoin_item_dangling"] += len(dangling)
+            ids = [i for i in ids if i in items]
+            rows.append({"id": row["TextJoinID"],
+                         "default": ids.index(row["DefaultItem"]) if row.get("DefaultItem") in ids else None,
+                         "items": [items[i] for i in ids]})
         self.stats["textjoin_entries"] = len(out)
+        self.stats["textjoin_rows"] = len(rows)
         with open(os.path.join(self.out_dir, "textjoin.json"), "w",
                   encoding="utf-8") as f:
             json.dump(out, f, ensure_ascii=False, indent=2)
+        with open(os.path.join(self.out_dir, "textjoins.jsonl"), "w", encoding="utf-8") as f:
+            for r in sorted(rows, key=lambda r: r["id"]):
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
     def index_dialogues(self, sentence_ids: set):
         """扫 Config/Level 与 Story 下除"已归到主任务的目录"之外的全部脚本。

@@ -28,8 +28,10 @@
 
 ```bash
 git clone --depth 50 --filter=blob:none --sparse --branch main https://gitlab.com/Dimbreath/animegamedata2.git upstream
-cd upstream && git sparse-checkout set ExcelBinOutput TextMap BinOutput/Talk BinOutput/Quest BinOutput/CodexQuest
+cd upstream && git sparse-checkout set ExcelBinOutput TextMap BinOutput/Talk BinOutput/Quest BinOutput/CodexQuest BinOutput/Voice Readable
 ```
+
+（实际的规则按语种挑 `TextMap/` 的文件和 `Readable/<语种>/` 目录，见 `src/gametext/genshin/__init__.py` 的 `UPSTREAM`。）
 
 单文件 raw：`https://gitlab.com/Dimbreath/animegamedata2/-/raw/main/<path>`
 目录列举：`https://gitlab.com/api/v4/projects/Dimbreath%2Fanimegamedata2/repository/tree?path=<path>&ref=main&per_page=100&page=N`，响应头 `x-total` 给总数。
@@ -259,9 +261,57 @@ hash 载体字段是 `OPKOJIEHJAE`（206 636 次）与 `BKGOAJFIHCO`（1940 次�
 
 CodexQuest 只覆盖进了任务图鉴的 483 章，**不是全量任务**，只能作为章节组织与展示顺序的来源，对话仍要走 `BinOutput/Talk/Quest/`。
 
+### Voice：对话与语音事件的映射
+
+7.1.0（`792978e550`）的 `BinOutput/Voice/Items/` 有 9641 个 JSON、207448 条事件；
+`Lut/Lut.json` 有 149753 条映射。Items 的触发枚举值与 `.wem` 路径是明文，字段名有明文和多套
+混淆形式（明文 trigger 还存在大小写变体），参数字段不能只读 `gameTriggerArgs`。
+Lut 是 voiceId 到触发类型、参数 id、事件 id 的字典，不能把外层 voiceId 当成 dialog_id。
+`Emo/` 是表情配置，不作配音映射；Voice 根目录的遗留副本不额外并入 Items。
+
+Items（要求有 wem）与 Lut 的 `Dialog` 参数并集，按 `dialog_id` 连接任务产物：
+去重 id 命中 **155394 / 338764（45.9%）**，dialog 行命中 **161409 / 351058（46.0%）**。
+剩余行只说明无映射，不能全部定性为无配音；其中旅行者行有 50338 条，也不据说话人强制标无配音。
+`DungeonReminder` 参数命中 Reminder 表 **4292 / 18541 个 id（23.1%）**，其中 238 行的
+`hasAudio` 为 false（含省略默认值），正向事件映射补为 `voiced`。
+映射存在不保证各语种音频文件实际齐全。
+
 ### 其他可能有用的目录
 
-`Readable/`（书籍、信件正文）、`Subtitle/`（过场字幕）、`BinOutput/Story/`、`BinOutput/Cutscene/`、`BinOutput/Voice/`。首版不做，schema 里预留位置即可。
+`Subtitle/`（过场字幕）、`BinOutput/Story/`、`BinOutput/Cutscene/`。还没做。
+
+## Readable：阅读面板的正文
+
+`Readable/<语种>/` 一个文件一篇正文（UTF-8 纯文本，无 BOM，多数是 `\r\n` 换行，空行分段；少数文件里混着字面量 `\n`）：
+书籍 `Book*`、圣遗物故事 `Relic*`、武器故事 `Weapon*`、衣装 `Costume*`、风之翼 `Wings*`，以及角色写的信件、告示、
+诗、画作说明（`DilucLetter`、`Poster*`、`Poem*`、`NPCPic_*`…）。7.1.0（`792978e5`）实测：
+
+| 项 | 值 |
+| --- | --- |
+| 每个语种的文件数 | 15 个语种各 1919 篇，文件名一一对应：中文 `Book100.txt`，其余 `Book100_EN.txt`、`Book100_JP.txt`… |
+| 大小 | CHS 6.4 MB / EN 7.6 MB / JP 8.0 MB |
+| 空文件 | CHS 22 / EN 33 / JP 33 |
+| 长度中位数（字符） | CHS 340 / EN 1208 / JP 448 |
+
+**各语种的对齐靠 `LocalizationExcelConfigData`**（2247 行）：一行给出这个资源在每个语种的路径，如
+`ART/UI/Readable/CHS/Book100`、`ART/UI/Readable/EN/Book100_EN`。列名有的是明文（`enPath`、`jpPath`），中文那列是
+混淆串（还有两列，取值相同），所以**按路径本身认语种**（`…/Readable/<语种>/<名>`），不认列名。这张表里 1921 行指向
+`Readable/`，其余是 Logo 图片与 `Subtitle/` 的字幕文件。上游的两处缺口：
+
+- 8 行指向的文件不存在（`Book338`–`342`、`Book1112`、`Book1180`、`Book1181`，三个语种都缺）；
+- 6 篇文件没有哪一行指向（`Weapon11431`–`15431` 五篇新武器的故事、`Book882`）：没有 id，也无从与别的语种对齐。
+
+阅读界面 `DocumentExcelConfigData`（1862 行）引用的是 `LocalizationExcelConfigData` 的 id：字段名虽叫 `questIDList`
+（以及 `contentLocalizedId` / `questContentLocalizedId`），存的是本地化 id 的列表，多数一行一个，`documentType` 为
+`Paged` 的有好几页。它引用 1899 个 id，其中 8 个在本地化表里不存在（含上面那 5 把新武器）；本地化表里指向 `Readable/` 的行
+有 30 行没被它引用（25 本书、5 篇武器故事）。
+
+阅读界面的另几张配置表把正文存在 TextMap 里（字段名明文，但仍按结构认，见[架构说明](architecture.md#阅读面板长文本)）：
+邮箱信件 `MailExcelConfigData`（323 行，`contentTextMapHash`，中位 47 字）、教程说明页 `TutorialDetailExcelConfigData`
+（3645 行，`descriptTextMapHash`，命中 0.95，中位 70 字）、活动来信 `AlchemySimLetterExcelConfigData`（6 行，中位 202 字）、角色资料里的角色故事 `FetterStoryExcelConfigData`
+（974 行，行 id 是 `fetterId`，正文 `storyContextTextMapHash` 命中 0.999、中位约 500 字；另一个正文字段 `storyContext2TextMapHash`
+只有 8 行查得到文本，是剧情推进后的变体版本，如钟离的两篇）。
+TextMap 里的换行一律是字面量 `\n`（CHS 里 2 万多条，没有一条真换行）。
 
 ## 数据质量实测（`BinOutput/Talk` 全部 15 个子目录）
 
@@ -313,3 +363,6 @@ Gadget 1394、Coop 473、Blossom 246、Storyboard 209、NpcOther 109、Cutscene 
       已经叫 `id`；7.1.0 仍有约 1.7 万个节点用旧键），代码两种键名都认；枚举首值 `TALK_ROLE_NONE` 被省略，对象在、类型缺时就是它（两版都占 0.29%）。
 
     其余用到的 Excel 表在 7.0.0 就已经省略默认值，读法不受影响。
+12. **`BinOutput/Voice` 的 `Lut` 外层 key 是 voiceId，不是 dialog_id。** Talk 里的整数与 Lut key 有 63 次数值相等（7.1.0），都是碰撞：
+    配音映射要走触发参数字段（`Dialog` / `DungeonReminder`），见 [Voice 一节](#voice对话与语音事件的映射)。
+    触发与参数的字段名都有明文、大小写变体与多套混淆名，参数不能只认 `gameTriggerArgs`。

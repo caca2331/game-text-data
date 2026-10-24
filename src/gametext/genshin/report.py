@@ -14,6 +14,10 @@ from .contract import CONTRACTS
 
 # 已知且已定性的缺口，写进报告备查，不算失败。定性见 docs/genshin/architecture.md。
 KNOWN_GAPS = {
+    "voice_mapping_is_positive_only": {
+        "note": "任务对话只凭 Voice/Items（有 wem 资源）与 Lut 的 Dialog 映射补 voiced；"
+                "缺映射仍为 unknown，不能据此断言无配音；不判 generic",
+    },
     "talk_group_containers": {
         "note": "BinOutput/Talk 下的 *Group 目录是 talk 容器而非对话列表，"
                 "整批判为 no text field 并计入 failures_expected，不产出节点",
@@ -27,6 +31,10 @@ KNOWN_GAPS = {
                 "由任务 / 关卡脚本触发，触发关系没解析，所以不挂到任务上；id 空间很小"
                 "（1003 这种），按数值去 Quest 里撞会撞出假关联，宁可不挂",
     },
+    "readable_files_without_localization": {
+        "note": "Readable/ 里有几篇文件没有 LocalizationExcelConfigData 的行指向（7.1.0 每个语种 6 篇：5 篇新武器的故事、"
+                "1 本书），没有 id、也无从与别的语种对齐，不进 readables_*；篇数见 index.readable_files_unreferenced",
+    },
     "non_quest_talks_not_emitted": {
         "note": "约 1.67 万个不归属任何任务的 talk（NPC 闲聊 1.37 万、Gadget、Coop、Activity…）"
                 "在 build/index/talks.jsonl 里有，但不进产物。7.0.0 上拿游戏直播量过："
@@ -38,7 +46,8 @@ KNOWN_GAPS = {
 def build(snapshot, index_stats, assemble_stats, emit_result, out_path):
     per_lang = emit_result["per_lang"]
     hard = []
-    for what, key in (("quests", "rows"), ("reminders", "reminders_rows"), ("terms", "terms_rows")):
+    for what, key in (("quests", "rows"), ("reminders", "reminders_rows"), ("terms", "terms_rows"),
+                      ("pronouns", "pronouns_rows"), ("readables", "readables_rows")):
         counts = {lang: per_lang[lang].get(key, 0) for lang in textmap.LANGS}
         if len(set(counts.values())) != 1:
             hard.append("%s 各语种行数不一致: %s" % (what, counts))
@@ -77,7 +86,7 @@ def build(snapshot, index_stats, assemble_stats, emit_result, out_path):
         # reminder 的基线（7.0.0）：上游各语种均无 0.39%（72/18 396）
         for kind, limit in (("dialog", 0.01), ("title", 0.05),
                             ("desc", 0.20), ("step", 0.02), ("meta", 0.02),
-                            ("reminder", 0.02)):
+                            ("reminder", 0.02), ("pronoun", 0.0)):
             lookups = per_lang[lang].get(kind + "_lookups", 0)
             if not lookups:
                 continue
@@ -150,13 +159,47 @@ def summarize(report) -> str:
            idx.get("reminder_dangling_next", 0), idx.get("reminder_cycles", 0),
            idx.get("reminder_merge_points", 0)))
     lines.append(
-        "  配音标记（reminders，按表行）: voiced %d / unvoiced %d / unknown %d；任务对话一律 unknown"
+        "  配音标记（reminders，按表行）: voiced %d / unvoiced %d / unknown %d"
         % tuple(idx.get("reminder_voice_" + k, 0) for k in ("voiced", "unvoiced", "unknown")))
+    lines.append(
+        "  配音标记（任务对话，按产物 dialog 行）: voiced %d / unknown %d；"
+        "Voice 映射 Dialog %d 个 id、DungeonReminder %d 个 id；补标 reminder %d 行"
+        % (p0.get("dialog_voice_voiced", 0), p0.get("dialog_voice_unknown", 0),
+           idx.get("voice_Dialog_ids", 0), idx.get("voice_DungeonReminder_ids", 0),
+           idx.get("reminder_voice_mapping_overrides", 0)))
     lines.append(
         "  短名词（terms，CHS ≤%d 字）: %d 条；各语种缺译 %s"
         % (emit_mod.TERM_MAX_CHARS, p0.get("terms_rows", 0),
            "、".join("%s %d" % (lang, report["per_lang"][lang].get("terms_missing", 0))
                     for lang in textmap.LANGS)))
+    lines.append(
+        "  称谓（pronouns，ManualTextMapConfigData 里 INFO_MALE_* / INFO_FEMALE_*）: %d 个键；查不到 %s"
+        % (p0.get("pronouns_rows", 0),
+           "、".join("%s %d" % (lang, report["per_lang"][lang].get("pronoun_unresolved", 0))
+                    for lang in textmap.LANGS)))
+    rd = report.get("emit", {}).get("readables_selection") or {}
+    lines.append(
+        "  阅读面板长文本（readables）: %d 条（%s）；基准语种没文本不收 %d（%s），与台词整段相同不收 %d，"
+        "表内同文 %d；各语种缺文本 %s"
+        % (p0.get("readables_rows", 0),
+           "、".join("%s %d" % kv for kv in (rd.get("rows") or {}).items()),
+           sum((rd.get("base_missing") or {}).values()),
+           "、".join("%s %d" % kv for kv in (rd.get("base_missing") or {}).items()) or "无",
+           sum((rd.get("spoken_dropped") or {}).values()), rd.get("duplicate_text", 0),
+           "、".join("%s %d" % (lang, report["per_lang"][lang].get("readables_missing", 0))
+                    for lang in textmap.LANGS)))
+    def file_missing(lang):
+        # 本地化记录指向、上游却没有的文件：基准语种的那些没进表（计在 readables_selection），其余语种写了 null
+        if lang == textmap.BASE_LANG:
+            return (rd.get("base_missing") or {}).get("file_missing", 0)
+        return report["per_lang"][lang].get("readables_missing_file_missing", 0)
+    lines.append(
+        "       Readable/ 文件: 各语种目录 %s 篇；没有本地化记录指向的 %s；本地化记录指向的文件不存在 %s；"
+        "快照里缺的语种目录 %s"
+        % ("、".join("%s %d" % kv for kv in (idx.get("readable_files_on_disk") or {}).items()),
+           "、".join("%s %d" % kv for kv in (idx.get("readable_files_unreferenced") or {}).items()),
+           "、".join("%s %d" % (lang, file_missing(lang)) for lang in textmap.LANGS),
+           "、".join(idx.get("readable_dirs_missing") or []) or "无"))
     lines.append(core_report.contract_line(report))
     lines.append(
         "  未解析: 预期内 %d（*Group 容器目录）/ 非预期 %d"

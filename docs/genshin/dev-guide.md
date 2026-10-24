@@ -33,6 +33,11 @@ uv run gametext genshin all
 
 更新后重点看的就是[改代码之后](#改代码之后)那三个数。
 
+**sparse 规则改了的那次**（如加了 `Readable/<语种>/`）：规则在每次带取数的 `snapshot` 里重设，所以主 checkout 带取数跑一次就跟上；
+只 `--no-fetch` 的老快照没有新目录，`index` 会把缺的目录记成非预期失败、整条流水线红掉，不会静默少一张表。
+槽里的 worktree 快照不带取数，要手动按代码里的规则重设一次（`gametext.core.snapshot._set_sparse(UPSTREAM, <快照目录>, textmap.LANGS)`，
+它会按需下载新目录的文件；别在 Git Bash 里手敲 `git sparse-checkout set /Readable/...`，以 `/` 开头的参数会被改写成 Windows 路径）。
+
 尚未实现：版本间 diff（新版本加了哪些任务、改了哪些台词）。
 
 ### 上游搬过一次家

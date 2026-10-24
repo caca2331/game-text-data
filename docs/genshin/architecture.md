@@ -61,11 +61,14 @@
  index ──────→ build/index/talks.jsonl    46535 个 talk，441510 个节点
          │     build/index/quests.jsonl   4417 个主任务 + talk 归属
          │     build/index/reminders.jsonl 12703 条语音字幕链（不经 assemble）
+         │     build/index/voices.json     Dialog / DungeonReminder 的正向配音映射
+         │     build/index/pronouns.jsonl  78 个称谓 / 句尾键 → TextMapHash（不经 assemble）
+         │     build/index/readables.jsonl 阅读面板长文本的出处：Readable/ 各语种文件名或 TextMapHash（不经 assemble）
          │     build/unparsed.jsonl       所有失败，分预期 / 非预期
          ↓
  assemble ───→ build/assembled.jsonl      任务树，**文本仍是 hash**
          ↓
- emit ───────→ corpus/{quests,reminders,terms}_{chs,en,jp}.jsonl.zst + report.json
+ emit ───────→ corpus/{quests,reminders,terms,pronouns,readables}_{chs,en,jp}.jsonl.zst + report.json
 ```
 
 三条约束：
@@ -85,6 +88,8 @@ src/gametext/genshin/
 ├── index.py      # 遍历 BinOutput/Talk 与 BinOutput/Quest，产出规范化中间层
 ├── assemble.py   # 任务树装配（MainQuest / Quest / CodexQuest / Talk）；不碰混淆字段名
 ├── emit.py       # 逐语种展开与 JSONL 写出
+├── voice.py      # Voice 触发映射，按结构与已知 id 集合推断参数字段
+├── readable.py   # 阅读面板长文本：Readable/ 的路径与读法、阅读界面配置表的清单
 ├── contract.py   # 各表的内容契约
 └── report.py     # 完整性校验与报告
 ```
@@ -187,6 +192,35 @@ src/gametext/genshin/
 
 `MIN_CONTENT_SCORE` 是 0.1：实测各真目录得分 0.28–0.99，容器目录低于 0.01。
 
+### 配音映射
+
+sparse 快照包含 `BinOutput/Voice/`。`voice.py` 只读 Items 与 Lut，按明文枚举值
+`Dialog` / `DungeonReminder` 找触发字段，再按触发字段名聚合同一来源中的 schema。
+将顶层正整数与已归一化的 Talk / Reminder id 集合对照，唯一命中率至少 0.9 的字段才是参数；
+歧义、无候选、缺源目录都写入 `unparsed.jsonl` 并让报告硬失败，不沿用旧索引。
+不硬编码混淆字段名。Items 还要求对象内存在 `.wem` 路径，排除无资源的事件占位。
+
+两源取并集写 `build/index/voices.json`，emit 按 `dialog_id` 补任务对话的 `voiced`；
+Reminder 按 `reminder_id` 优先补 `voiced`，未命中再依 `hasAudio`（含原来的默认值补全）。
+任务对话缺映射保持 `unknown`；不把旅行者或其他说话人当作无配音判据，不推测 `generic`。
+报告分别记来源文件 / 事件数、推断字段、两类 id 数及已知 id 命中数；任务覆盖按产物 dialog 行计，
+reminder 补标按原始表行计，链汇合造成的产物重复行不混进表行计数。
+
+### 阅读面板长文本
+
+`readables_*` 有两类来源（上游事实见 [data-source.md 的 Readable 一节](data-source.md#readable阅读面板的正文)）：
+
+- **`Readable/` 目录**：各语种文件名不同，对齐靠 `LocalizationExcelConfigData` 的同一行。那一行的列名中文是混淆串，
+  所以不认列名，**按取值认**：值形如 `…/Readable/<语种>/<名>` 的就是那个语种的文件。同一行同一语种出现两个不同文件、
+  或整张表一行都认不出，记非预期失败。**每个要产出的语种都要有 `Readable/<语种>/` 目录**，缺了也记非预期失败：
+  sparse 规则漏掉某个语种时，那一列会整批写 `null`，行数、对齐、契约照样通过，不拦就会被当成上游缺文本。
+  报告里"语种目录缺失"与"本地化记录指向的个别文件不存在"分开计。
+- **阅读界面配置表**（`readable.TABLES`：信件、教程说明页、活动来信、角色故事，各带自己的行 id 字段）：正文字段按结构认，取 TextMap 命中率 ≥ 0.5 的顶层
+  整数字段里**文本长度中位数最长**的那个（标题、署名都短）；否决：中位数不到 20 字就整张表判失败，不产出把标题当正文的表。
+
+行集合只看基准语种（CHS）：CHS 没文本的不收；**CHS 文本与任务对话或语音字幕里某一句整段相同的也不收**（下游把这张表叠加到画面上，
+同一段字两张表都认领会抢）。比较前两边都过 `readable.normalize`（字面量 `\n` 换成换行、去首尾空白）。
+
 ### 推断失败怎么办
 
 **必须计数并落盘到 `build/genshin/unparsed.jsonl`，附文件路径与失败原因。** 静默跳过是本项目唯一不可接受的错误处理方式 —— 前身项目 29% 的任务对话为空，因为 parser 里一句 `except: pass`，事后已经无法判断有多少是 bug 造成的。
@@ -207,7 +241,7 @@ mainQuestId 为前缀），歧义时取最长前缀匹配。这类节点标 `att
 
 ## 报告与校验
 
-`corpus/genshin/report.json` 每次 `emit` 生成。硬性校验不过则 CLI 以非零码退出：任一份产物各语种行数或逐行 id 不一致、非预期解析失败非零（含语音字幕表的字段推断失败）、输出主任务数少于上游。（语音字幕的无头环单独成链、计 `reminder_cycles`，结构上不会有"不在任何链上"的 id，所以那条判据删了。）
+`corpus/genshin/report.json` 每次 `emit` 生成。硬性校验不过则 CLI 以非零码退出：任一份产物各语种行数或逐行 id 不一致、非预期解析失败非零（含语音字幕表的字段推断失败、Voice 映射缺源目录或推不出唯一参数字段）、输出主任务数少于上游。（语音字幕的无头环单独成链、计 `reminder_cycles`，结构上不会有"不在任何链上"的 id，所以那条判据删了。）
 
 报告区分**上游缺译**与**解析失败**（6.6.0 实测：EN 缺的 1665 条标题里 93% 的中文原文就是 `$HIDDEN` / `(test)` / `$UNRELEASED`）：查不到文本时再查一次 CHS，CHS 有而本语种没有＝上游从未本地化（多为 `$HIDDEN` / `test` 内部字符串，EN 有 12 000 余条），记录但不报警；四语种都查不到＝上游根本没有这段文本，才值得报警。混在一起会让 EN/JP/KR 的未解析率虚高到 40%，看着像流水线坏了。
 
