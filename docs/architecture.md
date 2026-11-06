@@ -93,7 +93,7 @@ uv run gametext zzz all --compress none   # 出原始 .jsonl
 产物本身不公开分发，但要方便私下传：每款游戏把语料目录 `corpus/<游戏>/` 打成**一个自描述的包**，放进仓库根的 `out/`：
 
 ```bash
-uv run gametext genshin bundle      # -> out/genshin-7.1.0-<指纹前 12 位>.zip
+uv run gametext genshin bundle      # -> out/genshin-<游戏版本>-<指纹前 12 位>.zip
 uv run gametext genshin release     # 发布：先记进 releases/genshin/fingerprints.tsv，再打包（见下面的「指纹表与 rev」）
 ```
 

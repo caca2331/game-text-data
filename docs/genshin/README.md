@@ -8,14 +8,14 @@
 
 | | |
 | --- | --- |
-| 游戏版本 | **7.1.0** |
-| 上游 | `gitlab.com/Dimbreath/animegamedata2` @ `792978e550`（2026-10-01） |
-| 输出 | 各语种 **4417** 行、**351 058** 个对话节点，逐行对齐 |
-| 任务配音标记 | Voice 的 Dialog 映射命中 161409 / 351058 个产物 dialog 行（46.0%）；其余保留 unknown |
-| 语音字幕 | **12 703** 条链 / **18 608** 行（`ReminderExcelConfigData`），`reminders_*` |
-| 短名词 | **247 630** 条（TextMap 里 CHS ≤16 字的名词形短串），`terms_*` |
+| 游戏版本 | **7.2.0** |
+| 上游 | `gitlab.com/Dimbreath/animegamedata2` @ `d54f6f0d42`（2026-11-04） |
+| 输出 | 各语种 **4543** 行、**360 121** 个对话节点，逐行对齐 |
+| 任务配音标记 | Voice 的 Dialog 映射命中 165530 / 360121 个产物 dialog 行（46.0%）；其余保留 unknown |
+| 语音字幕 | **13 331** 条链 / **19 433** 行（`ReminderExcelConfigData`），`reminders_*` |
+| 短名词 | **255 677** 条（TextMap 里 CHS ≤16 字的名词形短串），`terms_*` |
 | 称谓 | **78** 个键（`ManualTextMapConfigData` 里 `INFO_MALE_*` / `INFO_FEMALE_*`：称谓 62、日文句尾 16，台词里按性别取的字查它），`pronouns_*` |
-| 阅读面板长文本 | **6 636** 条（`Readable/` 书籍与故事 1878、邮箱信件 323、教程说明页 3456、活动来信 6、角色故事 973；与台词整段相同的 19 条不收），`readables_*` |
+| 阅读面板长文本 | **6 771** 条（`Readable/` 书籍与故事 1905、邮箱信件 333、教程说明页 3538、活动来信 6、角色故事 989；与台词整段相同的 18 条不收），`readables_*` |
 | 对话正文未解析率 | CHS 0.04% / EN·JP 约 0.80% |
 | 非预期解析失败 | **0** |
 
@@ -39,6 +39,23 @@ uv run gametext genshin index                         # 单独重跑某一阶段
 uv run python tools/genshin/crosscheck.py             # 与旧爬虫结果交叉校验
 uv run python tools/genshin/p0_probe.py --limit 0     # 上游结构诊断
 ```
+
+### 打包原神 7.2.0
+
+默认取数会跟上游最新提交。要复现已登记的 7.2.0 rev 3，请从 [game-text-data 发布页](https://github.com/caca2331/game-text-data/releases)
+找到首次支持原神 7.2.0 的版本，检出它的发布标签，然后在仓库根运行：
+
+```bash
+uv run gametext genshin snapshot --upstream upstream/genshin-7.2.0 --build build/genshin-7.2.0
+git -C upstream/genshin-7.2.0 switch --detach d54f6f0d423ded9d055bb740a3e5f3aa8f2667f1
+uv run gametext genshin all --no-fetch --upstream upstream/genshin-7.2.0 --build build/genshin-7.2.0 --out corpus/genshin-7.2.0
+uv run gametext genshin bundle --out corpus/genshin-7.2.0 --bundle-dir out/genshin-7.2.0
+```
+
+如果浅克隆里没有这个提交，先按[跨版本回归](../dev-guide.md#跨版本回归)给 `upstream/genshin-7.2.0` 补取历史，再切换到指定提交。
+默认中、英、日三语应生成 `out/genshin-7.2.0/genshin-7.2.0-c95edd4bc412.zip`；在[原神指纹表](../../releases/genshin/fingerprints.tsv)核对 7.2.0 那一行。
+快照、中间产物和文本包都用独立目录，默认目录里给旧录像用的文件会保留。
+把 zip 放进 FlowOCR 数据目录的 `gametext/`，同一款游戏只留要用的版本。文本包自行生成，不随代码发布。
 
 ## 文档
 

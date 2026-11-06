@@ -7,6 +7,7 @@
 > 字段名如期全变、数量随之增长，但**结构性结论一条没变**，解析代码一行没改。
 > 再升到 7.1.0（`792978e5`）时上游改了序列化方式（见[陷阱清单](#陷阱清单)第 11 条），
 > 解析代码为此改过一次；7.0.0 上的产出因此只多补了 131 个说话人 id（旧代码的缺陷）。
+> 7.2.0（`d54f6f0d`）`Talk/Quest` 的大部分字段成了明文，解析代码没改，非预期失败仍为 0。
 > 上游字段名逐版本变化，本文的具体字段名会过期，**结构性结论不会**。
 > 复现方式：`uv run gametext genshin all --no-fetch` 出全量数字；
 > `uv run python tools/genshin/p0_probe.py --limit 0` 出 `Talk/Quest` 单目录的结构诊断。
@@ -17,8 +18,8 @@
 | --- | --- |
 | 主站 | `https://gitlab.com/Dimbreath/animegamedata2`（分支 `main`） |
 | GitHub 镜像 | `https://github.com/DimbreathBot/AnimeGameData`（分支 `main`，sha 与主站一致） |
-| 当前快照 | `792978e5503ecfba73dcb3562ed44a0d35a2abe2`（2026-10-01） |
-| 数据版本 | `CNRELWin7.1.0` |
+| 当前快照 | `d54f6f0d423ded9d055bb740a3e5f3aa8f2667f1`（2026-11-04） |
+| 数据版本 | `CNRELWin7.2.0` |
 | 已废弃的旧仓库 | `gitlab.com/Dimbreath/AnimeGameData`（分支 `master`），因**仓库体积超限**弃用，停在 6.6.0；其 README 只剩一行指向新仓库。GitHub 镜像的 `master` 分支是它的残留 |
 | 顶层目录 | `BinOutput/`、`ExcelBinOutput/`、`Readable/`、`Subtitle/`、`TextMap/` |
 
@@ -185,10 +186,11 @@ index 按整张表判断后补回默认值，见[陷阱清单](#陷阱清单)第
 
 #### 跨版本实测：字段名每个版本全换一遍
 
-取同一个文件 `BinOutput/Talk/Quest/1010061.json`，在四个版本的 commit 上分别读顶层 key：
+取同一个文件 `BinOutput/Talk/Quest/1010061.json`，在各版本的 commit 上分别读顶层 key：
 
 | 版本 | commit | 顶层 key |
 | --- | --- | --- |
+| 7.2.0 | `d54f6f0d42` | `dialogList, talkId`（顶层全是明文；对话节点 12 个键里 10 个也是，如 `talkContentTextMapHash`、`talkRole`、`nextDialogs`） |
 | 7.1.0 | `792978e550` | `PCIAMAFDDAA, talkId`（talkId 成了明文） |
 | 7.0.0 | `26df1dfbdf` | `ALBFHGKNMLK, IOKNFDJFGDH, PFALHAKIILD` |
 | 6.6.0 | `4d9593eb73` | `IOEDPLCPFFB, KFCNJPJOJLA, MEGMIMEDODJ` |
@@ -196,13 +198,13 @@ index 按整张表判断后补回默认值，见[陷阱清单](#陷阱清单)第
 | 6.4.0 | `b761e4d2e9` | `DLPKMDPABFM, LBPGKDMGFBN, LOJEOMAPIIM` |
 | 6.3.0 | `a7624301c8` | `ADHLLDAPKCM, MOEOFGCKILF, PAINLIBBLDK` |
 
-**五个版本无一重合。** 任何硬编码字段名的实现每个版本都会崩，而且是静默崩。这就是
+**混淆名逐版本无一重合**（7.2.0 的 `Talk/Quest` 多数成了明文，但不能指望一直如此）。任何硬编码字段名的实现每个版本都会崩，而且是静默崩。这就是
 本项目坚持结构推断的全部理由。
 
 这条路线已经受过一次真实检验：6.6.0 → 7.0.0 换上游、换分支、字段名全变，**解析代码
 一行没改**，非预期失败仍为 0（dialogId 从 `GMOMCKNPBGE` 变成 `OIFGMOHKPOI`，推断照样认出）。
 7.0.0 → 7.1.0 字段名照样全换，推断也都认出来了；要改代码是因为上游改了序列化方式
-（[陷阱清单](#陷阱清单)第 11 条），不是字段名。
+（[陷阱清单](#陷阱清单)第 11 条），不是字段名。7.1.0 → 7.2.0 `Talk/Quest` 的字段名大多成了明文，推断不依赖名字，照样认出。
 
 顺带解释了上面那张 schema 表：6.5.0 的字段名正是 6.6.0 里的 **schema 2**（hex 命名
 那批）。也就是说 6.6.0 快照里那 337 个 hex 文件是**上一版本遗留的旧 dump**，上游没有
